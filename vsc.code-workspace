@@ -1,0 +1,76 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "[elixir]": { "editor.defaultFormatter": "elixir-tools.elixir-tools" },
+    "[phoenix-heex]": {
+      "editor.defaultFormatter": "animus-coop.vscode-elixir-mix-formatter"
+    },
+    "editor.acceptSuggestionOnEnter": "off",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.guides.bracketPairs": "active",
+    "editor.insertSpaces": true,
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.tabSize": 2,
+    "editor.trimAutoWhitespace": false,
+    "editor.wordBasedSuggestions": false,
+    "elixir-tools.credo.enable": true,
+    "elixir-tools.nextls.enable": true,
+    "elixirLS.dialyzerEnabled": true,
+    "elixirLS.enableTestLenses": true,
+    "elixirLS.fetchDeps": true,
+    "elixirLS.suggestSpecs": false,
+    "emmet.includeLanguages": {
+      "html-eex": "html",
+      "phoenix-heex": "html"
+    },
+    "files.associations": {
+      "*.css": "tailwindcss",
+      "*.heex": "phoenix-heex",
+      ".env.prod": "dotenv"
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/bower_components": true,
+      "**/*.code-search": true,
+      "_build": true,
+      ".data": true,
+      ".direnv": true,
+      ".elixir_ls": true,
+      ".elixir-tools": true,
+      ".nix": true,
+      "deps": true,
+      "legacy": true,
+      "priv/plts": true,
+      "priv/resource_snapshots": true
+    },
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "indentRainbow.ignoreErrorLanguages": ["*"],
+    "tailwindCSS.includeLanguages": {
+      "elixir": "phoenix-eex",
+      "phoenix-heex": "phoenix-eex"
+    },
+    "vsicons.associations.files": [
+      {
+        "icon": "config",
+        "extensions": ["env.prod", "env.stag", "env.test"],
+        "format": "svg"
+      },
+      {
+        "icon": "eex",
+        "extensions": ["heex", "html.heex"],
+        "format": "svg"
+      }
+    ],
+    "window.title": "[AshUUID] ${activeEditorShort}${separator}"
+  }
+}

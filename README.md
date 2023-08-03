@@ -1,0 +1,117 @@
+# AshUUID
+
+[![Hex](http://img.shields.io/hexpm/v/ash_uuid.svg?style=flat)](https://hex.pm/packages/ash_uuid)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-purple.svg)](https://hexdocs.pm/ash_uuid/)
+[![Downloads](https://img.shields.io/hexpm/dt/ash_uuid.svg)](https://hex.pm/packages/ash_uuid)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/zoonect-oss/ash_uuid/ci.yml)](https://github.com/zoonect-oss/ash_uuid)
+[![Coverage Status](https://coveralls.io/repos/github/zoonect-oss/ash_uuid/badge.svg?branch=main)](https://coveralls.io/github/zoonect-oss/ash_uuid?branch=main)
+[![License](https://img.shields.io/github/license/zoonect-oss/ash_uuid?color=blue)](https://github.com/zoonect-oss/ash_uuid/blob/main/LICENSE.md)
+[![GitHub Stars](https://img.shields.io/github/stars/zoonect-oss/ash_uuid?color=ffd700&label=github&logo=github)](https://github.com/zoonect-oss/ash_uuid)
+
+## Installation
+
+```elixir
+def deps do
+  [
+    {:ash_uuid, "~> 0.1"},
+  ]
+end
+```
+
+## Configuration
+
+### `config/config.exs`:
+
+```elixir
+# Ash: Type shorthands, not required, you can add only what you need
+config :ash, :custom_types,
+  uuidv4: AshUUID.UUIDv4,
+  uuidv7: AshUUID.UUIDv7,
+  base62_uuidv4: AshUUID.Base62UUIDv4,
+  base62_uuidv7: AshUUID.Base62UUIDv7,
+  prefixed_base62_uuidv4: AshUUID.PrefixedBase62UUIDv4,
+  prefixed_base62_uuidv7: AshUUID.PrefixedBase62UUIDv7
+
+# Ash: Default belongs_to type, not required
+config :ash, :default_belongs_to_type, AshUUID.PrefixedBase62UUIDv7
+```
+
+## Usage
+
+```elixir
+defmodule Pineapple do
+  use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
+
+  code_interface do
+    define_for Area
+  end
+
+  postgres do
+    table "pineapples"
+    repo MyApp.Repo
+  end
+
+  uuid do
+    version 7
+    encoded? true
+    prefixed? true
+    prefix "pnp"
+  end
+
+  attributes do
+    uuid_primary_key :id,
+    create_timestamp :inserted_at
+  end
+
+  actions do
+    defaults [:create, :read, :update]
+  end
+end
+```
+
+The full documentation can be found [on HexDocs].
+
+## Roadmap
+
+-
+
+## Developing
+
+To get set up with the development environment, you will need a Postgres
+instance and an environment variable DATABASE_URL according to `config/config.exs`.
+
+You may now generate and apply the test migrations:
+
+```sh
+mix ash_postgres.generate_migrations
+mix ash_postgres.create
+mix ash_postgres.migrate
+mix test
+```
+
+**AshUUID** uses `ex_check` to bundle the test configuration, and simply running
+`mix check` should closely follow the configuration used in CI.
+
+## Contributing
+
+If you have ideas or come across any bugs, feel free to open a [pull request] or
+an [issue]. You can also find me on the [Ash Discord](https://discord.gg/D7FNG2q) as `@moissela`.
+
+## License
+
+MIT License
+
+Copyright (c) 2023 [Alessio Montagnani]
+
+See [LICENSE.md] for details.
+
+[Alessio Montagnani]: https://github.com/moissela
+[LICENSE.md]: https://github.com/zoonect-oss/ash_uuid/blob/main/LICENSE.md
+[pull request]: https://github.com/zoonect-oss/ash_uuid/pulls
+[issue]: https://github.com/zoonect-oss/ash_uuid/issues
+[on HexDocs]: https://hexdocs.pm/ash_uuid
+[PostGIS]: https://postgis.net/
+[PostGIS reference]: https://postgis.net/docs/reference.html
+[postgis image]: https://hub.docker.com/r/postgis/postgis
+[Ash]: https://github.com/ash-project/ash
+[Ash expressions]: https://hexdocs.pm/ash/expressions.html
