@@ -1,4 +1,4 @@
-defmodule AshUUID.Test.Resource.Lime do
+defmodule AshUUID.Test.Avocado do
   @moduledoc false
 
   use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
@@ -8,19 +8,18 @@ defmodule AshUUID.Test.Resource.Lime do
   end
 
   postgres do
-    table "limes"
+    table "avocados"
     repo AshUUID.Test.Repo
   end
 
-  uuid do
-    version 4
-    encoded? true
-  end
-
   attributes do
-    uuid_primary_key :id
+    uuid_pk :id, version: 4, encoded?: false, prefixed?: false
 
     create_timestamp :inserted_at
+  end
+
+  relationships do
+    belongs_to :avocado_smoothie, AshUUID.Test.AvocadoSmoothie
   end
 
   actions do

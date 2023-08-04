@@ -1,4 +1,4 @@
-defmodule AshUUID.Test.Resource.Banana do
+defmodule AshUUID.Test.Orange do
   @moduledoc false
 
   use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
@@ -8,18 +8,18 @@ defmodule AshUUID.Test.Resource.Banana do
   end
 
   postgres do
-    table "bananas"
+    table "oranges"
     repo AshUUID.Test.Repo
   end
 
-  uuid do
-    version 7
-  end
-
   attributes do
-    uuid_primary_key :id
+    uuid_pk :id, version: 4
 
     create_timestamp :inserted_at
+  end
+
+  relationships do
+    belongs_to :orange_smoothie, AshUUID.Test.OrangeSmoothie
   end
 
   actions do

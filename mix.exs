@@ -36,21 +36,22 @@ defmodule AshUUID.MixProject do
 
   defp deps do
     [
-      # {:jason, "~> 1.4"},
       {:uniq, "~> 0.6"},
       {:ash, "~> 2.13"},
       {:ash_postgres, "~> 1.3", only: :test},
 
       # Testing, documentation, and release tools
-      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false},
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:sobelow, "~> 0.12.2", only: [:dev, :test], runtime: false},
-      {:doctor, "~> 0.21.0", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.16.1", only: :test},
-      {:ex_check, "~> 0.15.0", only: [:dev, :test]},
-      {:ex_doc, "~> 0.30.4", only: [:dev, :test], runtime: false},
-      {:git_ops, "~> 2.6", only: :dev}
+      {:mix_test_interactive, ">= 0.0.0", only: :test, runtime: false},
+      {:mix_test_watch, ">= 0.0.0", only: :test, runtime: false},
+      {:mix_audit, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:sobelow, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:doctor, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:excoveralls, ">= 0.0.0", only: :test},
+      {:ex_check, ">= 0.0.0", only: [:dev, :test]},
+      {:ex_doc, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:git_ops, ">= 0.0.0", only: :dev}
     ]
   end
 
@@ -99,6 +100,8 @@ defmodule AshUUID.MixProject do
       sobelow: :dev,
       doctor: :dev,
       test: :test,
+      "test.interactive": :test,
+      "test.watch": :test,
       coveralls: :test,
       "coveralls.detail": :test,
       "coveralls.post": :test,

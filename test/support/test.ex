@@ -4,11 +4,17 @@ defmodule AshUUID.Test do
   use Ash.Api
 
   resources do
-    resource AshUUID.Test.Resource.Avocado
-    resource AshUUID.Test.Resource.Banana
-    resource AshUUID.Test.Resource.Lime
-    resource AshUUID.Test.Resource.Mango
-    resource AshUUID.Test.Resource.Orange
-    resource AshUUID.Test.Resource.Pineapple
+    resource AshUUID.Test.Avocado
+    resource AshUUID.Test.AvocadoSmoothie
+    resource AshUUID.Test.Banana
+    resource AshUUID.Test.BananaSmoothie
+    resource AshUUID.Test.Lime
+    resource AshUUID.Test.LimeSmoothie
+    resource AshUUID.Test.Mango
+    resource AshUUID.Test.MangoSmoothie
+    resource AshUUID.Test.Orange
+    resource AshUUID.Test.OrangeSmoothie
+    resource AshUUID.Test.Pineapple
+    resource AshUUID.Test.PineappleSmoothie
   end
 end

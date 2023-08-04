@@ -1,120 +1,81 @@
 defmodule AshUUID do
-  @uuid %Spark.Dsl.Section{
-    name: :uuid,
-    schema: [
-      version: [
-        type: {:one_of, [4, 7]},
-        required: true,
-        doc: """
-        Version doc....
-        """
-      ],
-      encoded?: [
-        type: :boolean,
-        default: false,
-        doc: """
-        Encoded? doc....
-        """
-      ],
-      prefixed?: [
-        type: :boolean,
-        default: false,
-        doc: """
-        Prefixed? doc....
-        """
-      ],
-      prefix: [
-        type: :string,
-        default: "id",
-        doc: """
-        Prefix doc....
-        """
-      ]
-    ]
-  }
-
-  @sections [@uuid]
-
   @moduledoc """
   Base module containing common utility functions
 
   This module contains some things used internally that may also be useful
   outside of `AshUUID` itself.
-
-  Dsl documentation for AshUUID
-  <!--- ash-hq-hide-start --> <!--- -->
-
-  ## DSL Documentation
-
-  ### Index
-
-  #{Spark.Dsl.Extension.doc_index(@sections)}
-
-  ### Docs
-
-  #{Spark.Dsl.Extension.doc(@sections)}
-  <!--- ash-hq-hide-stop --> <!--- -->
   """
   @moduledoc since: "0.1.0"
 
   use Spark.Dsl.Extension,
-    sections: @sections,
-    imports: [],
-    transformers: [
-      AshUUID.Transformers.SetDefaults
+    imports: [AshUUID.Macros],
+    transformers: [AshUUID.PostgresTransformer]
+
+  @doc "Transform the last element of a module path into a snake-cased atom."
+  @doc since: "0.1.0"
+  # sobelow_skip ["DOS.StringToAtom"]
+  def module_suffix_to_snake(module) do
+    module
+    |> Module.split()
+    |> List.last()
+    |> Macro.underscore()
+    |> String.to_atom()
+  end
+
+  @doc "Macro to check whether a module is a `AshUUID` type, suitable for use in guards"
+  @doc since: "0.1.0"
+  defmacro is_uuid(struct) do
+    quote location: :keep do
+      unquote(struct) == AshUUID.RawV4 or
+        unquote(struct) == AshUUID.RawV7 or
+        unquote(struct) == AshUUID.EncodedV4 or
+        unquote(struct) == AshUUID.EncodedV7 or
+        unquote(struct) == AshUUID.PrefixedV4 or
+        unquote(struct) == AshUUID.PrefixedV7
+    end
+  end
+
+  @doc "List of `AshUUID` types"
+  @doc since: "0.1.0"
+  def uuid_types do
+    [
+      AshUUID.RawV4,
+      AshUUID.RawV7,
+      AshUUID.EncodedV4,
+      AshUUID.EncodedV7,
+      AshUUID.PrefixedV4,
+      AshUUID.PrefixedV7
     ]
+  end
 
-  # @doc "Transform the last element of a module path into a snake-cased atom."
-  # @doc since: "0.1.0"
-  # # sobelow_skip ["DOS.StringToAtom"]
-  # def module_suffix_to_snake(module) do
-  #   module
-  #   |> Module.split()
-  #   |> List.last()
-  #   |> Macro.underscore()
-  #   |> String.to_atom()
-  # end
+  @doc """
+  Type aliases for `AshUUID` types, auto-generated from the module names
 
-  # @doc "Macro to check whether a module is a `AshUUID` type, suitable for use in guards"
-  # @doc since: "0.1.0"
-  # # credo:disable-for-lines:17 Credo.Check.Refactor.CyclomaticComplexity
-  # defmacro is_uuid(struct) do
-  #   quote location: :keep do
-  #     unquote(struct) == AshUUID.UUIDv4 or
-  #       unquote(struct) == AshUUID.UUIDv7 or
-  #       unquote(struct) == AshUUID.Base62UUIDv4 or
-  #       unquote(struct) == AshUUID.Base62UUIDv7 or
-  #       unquote(struct) == AshUUID.PrefixedBase62UUIDv4 or
-  #       unquote(struct) == AshUUID.PrefixedBase62UUIDv7
-  #   end
-  # end
+  For example, the alias derived from `AshUUID.UUIDv4` is `:uuidv4`.
+  """
+  @doc since: "0.1.0"
+  def uuid_type_aliases do
+    Enum.map(uuid_types(), fn type ->
+      {module_suffix_to_snake(type), type}
+    end)
+  end
 
-  # @doc "List of `AshUUID` types"
-  # @doc since: "0.1.0"
-  # def uuid_types do
-  #   [
-  #     AshUUID.UUIDv4,
-  #     AshUUID.UUIDv7,
-  #     AshUUID.Base62UUIDv4,
-  #     AshUUID.Base62UUIDv7,
-  #     AshUUID.PrefixedBase62UUIDv4,
-  #     AshUUID.PrefixedBase62UUIDv7
-  #   ]
-  # end
+  def uuid_type(%AshUUID.Config{version: 4, encoded?: false}), do: AshUUID.RawV4
+  def uuid_type(%AshUUID.Config{version: 7, encoded?: false}), do: AshUUID.RawV7
+  def uuid_type(%AshUUID.Config{version: 4, encoded?: true, prefixed?: false}), do: AshUUID.EncodedV4
+  def uuid_type(%AshUUID.Config{version: 7, encoded?: true, prefixed?: false}), do: AshUUID.EncodedV7
+  def uuid_type(%AshUUID.Config{version: 4, encoded?: true, prefixed?: true}), do: AshUUID.PrefixedV4
+  def uuid_type(%AshUUID.Config{version: 7, encoded?: true, prefixed?: true}), do: AshUUID.PrefixedV7
 
-  # @doc """
-  # Type aliases for `AshUUID` types, auto-generated from the module names
+  def generator(AshUUID.RawV4, _prefix), do: AshUUID.RawV4.generator([])
+  def generator(AshUUID.RawV7, _prefix), do: AshUUID.RawV7.generator([])
+  def generator(AshUUID.EncodedV4, _prefix), do: AshUUID.EncodedV4.generator([])
+  def generator(AshUUID.EncodedV7, _prefix), do: AshUUID.EncodedV7.generator([])
+  def generator(AshUUID.PrefixedV4, prefix), do: AshUUID.PrefixedV4.generator([prefix: prefix])
+  def generator(AshUUID.PrefixedV7, prefix), do: AshUUID.PrefixedV7.generator([prefix: prefix])
 
-  # For example, the alias derived from `AshUUID.UUIDv4` is `:uuidv4`.
-  # """
-  # @doc since: "0.1.0"
-  # def uuid_type_aliases do
-  #   Enum.map(uuid_types(), fn type ->
-  #     {module_suffix_to_snake(type), type}
-  #   end)
-  # end
-
-  def generate, do: Uniq.UUID.uuid7()
+  def generate(4), do: Uniq.UUID.uuid4()
+  def generate(7), do: Uniq.UUID.uuid7()
 
   def format?(<<_g1::binary-size(8), ?-, _g2::binary-size(4), ?-, _g3::binary-size(4), ?-, _g4::binary-size(4), ?-, _g5::binary-size(12)>> = _string_uuid), do: :string_uuid
   def format?(<<_b62_string_uuid::binary-size(22)>>), do: :b62_string_uuid
@@ -197,5 +158,14 @@ defmodule AshUUID do
     end
   rescue
     _error in ArgumentError -> :error
+  end
+
+  def integer_to_string_uuid(integer_uuid) do
+    with :integer_uuid <- format?(integer_uuid) do
+      string_uuid = Uniq.UUID.to_string(integer_uuid)
+      {:ok, string_uuid}
+    else
+      _ -> :error
+    end
   end
 end

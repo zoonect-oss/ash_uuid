@@ -10,4 +10,8 @@ defmodule AshUUIDTest do
 
   setup :checkout
 
+  describe "AshUUID.PrefixedV4" do
+    test "initial testing" do
+    end
+  end
 end

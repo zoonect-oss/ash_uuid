@@ -9,7 +9,6 @@ config :spark, :formatter,
       :resource,
       :code_interface,
       :postgres,
-      :uuid,
       :attributes,
       :relationships,
       :identities,
@@ -30,7 +29,7 @@ if Mix.env() == :dev do
 end
 
 if Mix.env() == :test do
-  # config :logger, level: :warning
+  config :mix_test_watch, clear: true, tasks: ["test", "credo"]
 
   config :ash_uuid, AshUUID.Test.Repo,
     parameters: [plan_cache_mode: "force_custom_plan"],
@@ -49,12 +48,18 @@ if Mix.env() == :test do
 
   # Ash: type shorthands
   # config :ash, :custom_types,
-  #   uuidv4: AshUUID.UUIDv4,
-  #   uuidv7: AshUUID.UUIDv7,
-  #   base62_uuidv4: AshUUID.Base62UUIDv4,
-  #   base62_uuidv7: AshUUID.Base62UUIDv7,
-  #   prefixed_base62_uuidv4: AshUUID.PrefixedBase62UUIDv4,
-  #   prefixed_base62_uuidv7: AshUUID.PrefixedBase62UUIDv7
+  #   raw_v4: AshUUID.RawV4,
+  #   raw_v7: AshUUID.RawV7,
+  #   encoded_v4: AshUUID.EncodedV4,
+  #   encoded_v7: AshUUID.EncodedV7,
+  #   prefixed_v4: AshUUID.PrefixedV4,
+  #   prefixed_v7: AshUUID.PrefixedV7
 
-  # config :ash, :default_belongs_to_type, GestartCom.Ash.Type.Xid
+  # config :ash, :default_belongs_to_type, AshUUID.PrefixedV7
+
+  # config :ash_uuid, :ash_uuid,
+  #   version: 7,
+  #   encoded?: true,
+  #   prefixed?: true,
+  #   migration_default?: true
 end
