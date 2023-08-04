@@ -5,7 +5,7 @@ defmodule AshUUID.Config do
     version: 7,
     encoded?: true,
     prefixed?: true,
-    migration_default?: true
+    migration_default?: false
   ]
 
   def get_config(opts) do
