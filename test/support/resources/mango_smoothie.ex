@@ -13,7 +13,7 @@ defmodule AshUUID.Test.MangoSmoothie do
   end
 
   attributes do
-    uuid_pk :id, version: 4, encoded?: false, prefixed?: false
+    uuid_pk :id, prefixed?: false
 
     create_timestamp :inserted_at
   end

@@ -19,7 +19,7 @@ defmodule AshUUID.Test.Mango do
   end
 
   relationships do
-    belongs_to :mango_smoothie, AshUUID.Test.MangoSmoothie
+    belongs_to :mango_smoothie, AshUUID.Test.MangoSmoothie, attribute_writable?: true
   end
 
   actions do
