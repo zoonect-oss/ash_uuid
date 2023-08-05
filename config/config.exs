@@ -57,9 +57,9 @@ if Mix.env() == :test do
 
   # config :ash, :default_belongs_to_type, AshUUID.PrefixedV7
 
-  # config :ash_uuid, :ash_uuid,
-  #   version: 7,
-  #   encoded?: true,
-  #   prefixed?: true,
-  #   migration_default?: true
+  config :ash_uuid, :ash_uuid,
+    version: 7,
+    encoded?: true,
+    prefixed?: true,
+    migration_default?: true
 end
