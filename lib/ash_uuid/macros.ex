@@ -3,7 +3,6 @@ defmodule AshUUID.Macros do
 
   defmacro uuid_attribute(name, opts \\ []) do
     computed_opts = AshUUID.Config.get_config(opts)
-    type = AshUUID.uuid_type(computed_opts)
 
     default_prefix =
       __CALLER__.module
@@ -14,11 +13,17 @@ defmodule AshUUID.Macros do
 
     prefix = Keyword.get(opts, :prefix, default_prefix)
 
-    constraints = [prefix: prefix, migration_default?: computed_opts.migration_default?]
+    constraints = [
+      prefix: prefix,
+      version: computed_opts.version,
+      encoded?: computed_opts.encoded?,
+      prefixed?: computed_opts.prefixed?,
+      migration_default?: computed_opts.migration_default?
+    ]
 
     default =
       quote do
-        fn -> AshUUID.generator(unquote(type), unquote(prefix)) end
+        fn -> AshUUID.UUID.generator(unquote(constraints)) end
       end
 
     field_opts =
@@ -35,11 +40,14 @@ defmodule AshUUID.Macros do
       |> Keyword.update(:constraints, constraints, fn kw ->
         kw
         |> Keyword.put(:prefix, prefix)
+        |> Keyword.put(:version, computed_opts.version)
+        |> Keyword.put(:encoded?, computed_opts.encoded?)
+        |> Keyword.put(:prefixed?, computed_opts.prefixed?)
         |> Keyword.put(:migration_default?, computed_opts.migration_default?)
       end)
 
     quote do
-      attribute unquote(name), unquote(type), unquote(field_opts)
+      attribute unquote(name), AshUUID.UUID, unquote(field_opts)
     end
   end
 end

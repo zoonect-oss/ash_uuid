@@ -13,6 +13,7 @@ locals_without_parens = [
     "{config,lib,test}/**/*.{heex,ex,exs}",
     "priv/*/seeds.exs"
   ],
+  line_length: 120,
   locals_without_parens: locals_without_parens,
   export: [
     locals_without_parens: locals_without_parens

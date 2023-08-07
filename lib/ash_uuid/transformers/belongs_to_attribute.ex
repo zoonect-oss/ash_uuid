@@ -13,29 +13,23 @@ defmodule AshUUID.Transformers.BelongsToAttribute do
     |> Transformer.get_entities([:relationships])
     |> Enum.filter(&(&1.type == :belongs_to && &1.define_attribute?))
     |> Enum.reject(fn relationship ->
-      dsl_state
-      |> Transformer.get_entities([:attributes])
-      |> Enum.find(&(Map.get(&1, :name) == relationship.source_attribute))
-    end)
-    |> Enum.reject(fn relationship ->
-      destination_dsl_state = apply(relationship.destination, :spark_dsl_config, [])
+      source_attribute_exist =
+        dsl_state
+        |> Transformer.get_entities([:attributes])
+        |> Enum.find(&(Map.get(&1, :name) == relationship.source_attribute))
+
+      destination_dsl_state = relationship.destination.spark_dsl_config()
 
       destination_attribute =
         Transformer.get_entities(destination_dsl_state, [:attributes])
         |> Enum.find(&(&1.name == relationship.destination_attribute))
 
+      source_attribute_exist ||
       is_nil(destination_attribute) ||
-        destination_attribute.type not in [
-          AshUUID.RawV4,
-          AshUUID.RawV7,
-          AshUUID.EncodedV4,
-          AshUUID.EncodedV7,
-          AshUUID.PrefixedV4,
-          AshUUID.PrefixedV7
-        ]
+      destination_attribute.type != AshUUID.UUID
     end)
     |> Enum.reduce_while({:ok, dsl_state}, fn relationship, {:ok, dsl_state} ->
-      destination_dsl_state = apply(relationship.destination, :spark_dsl_config, [])
+      destination_dsl_state = relationship.destination.spark_dsl_config()
 
       destination_attribute =
         Transformer.get_entities(destination_dsl_state, [:attributes])

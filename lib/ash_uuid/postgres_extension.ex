@@ -1,4 +1,6 @@
 defmodule AshUUID.PostgresExtension do
+  @moduledoc false
+
   use AshPostgres.CustomExtension, name: "ash-uuid", latest_version: 1
 
   @impl true
