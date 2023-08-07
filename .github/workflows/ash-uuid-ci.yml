@@ -82,17 +82,6 @@ jobs:
       - uses: team-alembic/staple-actions/actions/mix-format@main
         with:
           mix-env: test
-  #  spark-formatter:
-  #    name: mix spark.formatter --check
-  #    runs-on: ubuntu-latest
-  #    needs: build-test
-  #    steps:
-  #      - uses: actions/checkout@v3
-  #      - uses: team-alembic/staple-actions/actions/mix-task@main
-  #        if: ${{inputs.spark-formatter}}
-  #        with:
-  #          mix-env: test
-  #          task: spark.formatter --check
   docs:
     name: mix docs
     runs-on: ubuntu-latest
@@ -141,8 +130,8 @@ jobs:
       - uses: team-alembic/staple-actions/actions/mix-doctor@main
         with:
           mix-env: dev
-  coveralls:
-    name: mix coveralls
+  test:
+    name: mix test
     runs-on: ubuntu-latest
     needs: build-test
     services:
@@ -178,18 +167,11 @@ jobs:
         env:
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
         if: ${{inputs.postgres}}
-      #      - uses: team-alembic/staple-actions/actions/mix-task@main
-      #        with:
-      #          mix-env: test
-      #          task: ash_postgres.migrate --tenants
-      #        if: ${{inputs.postgres}}
       - uses: team-alembic/staple-actions/actions/mix-task@main
         with:
           mix-env: test
-          task: coveralls.github
+          task: test
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PGHOST: postgres
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
   release:
     needs:
@@ -199,13 +181,12 @@ jobs:
       - unused
       - audit
       - format
-      #      - spark-formatter
       - docs
       - dialyzer
       - credo
       - doctor
       - sobelow
-      - coveralls
+      - test
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     name: Release

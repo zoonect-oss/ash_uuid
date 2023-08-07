@@ -17,7 +17,6 @@ defmodule AshUUID.MixProject do
       cli: cli(),
       deps: deps(),
       package: package(),
-      test_coverage: test_coverage(),
       docs: docs(),
       name: Macro.camelize("#{@name}"),
       description: @description
@@ -49,7 +48,6 @@ defmodule AshUUID.MixProject do
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:sobelow, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:doctor, ">= 0.0.0", only: [:dev, :test], runtime: false},
-      {:excoveralls, ">= 0.0.0", only: :test},
       {:ex_check, ">= 0.0.0", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:git_ops, ">= 0.0.0", only: :dev}
@@ -63,10 +61,6 @@ defmodule AshUUID.MixProject do
       formatters: ~w(html epub),
       extras: ~w(README.md CHANGELOG.md)
     ]
-  end
-
-  defp test_coverage do
-    [tool: ExCoveralls]
   end
 
   defp package do
@@ -103,11 +97,6 @@ defmodule AshUUID.MixProject do
       test: :test,
       "test.interactive": :test,
       "test.watch": :test,
-      coveralls: :test,
-      "coveralls.detail": :test,
-      "coveralls.post": :test,
-      "coveralls.html": :test,
-      "coveralls.github": :test,
       "ash_postgres.create": :test,
       "ash_postgres.generate_migrations": :test,
       "ash_postgres.migrate": :test,
