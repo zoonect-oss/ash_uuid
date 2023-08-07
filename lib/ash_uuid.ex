@@ -14,9 +14,15 @@ defmodule AshUUID do
       AshUUID.Transformers.BelongsToAttribute
     ]
 
-  def identify_format(<<_::binary-size(8), ?-, _::binary-size(4), ?-, _::binary-size(4), ?-, _::binary-size(4), ?-, _::binary-size(12)>>), do: :raw
+  def identify_format(
+        <<_::binary-size(8), ?-, _::binary-size(4), ?-, _::binary-size(4), ?-, _::binary-size(4), ?-,
+          _::binary-size(12)>>
+      ),
+      do: :raw
+
   def identify_format(<<_::binary-size(22)>>), do: :encoded
   def identify_format(<<_::128>>), do: :integer
+
   def identify_format(string) when is_binary(string) do
     case String.split(string, "_") do
       [_, <<_::binary-size(22)>>] -> :prefixed
@@ -24,6 +30,7 @@ defmodule AshUUID do
       _ -> :unknown
     end
   end
-  def identify_format(nil), do: :nil
+
+  def identify_format(nil), do: nil
   def identify_format(_term), do: :unknown
 end

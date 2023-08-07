@@ -33,8 +33,7 @@ defmodule AshUUID.Encoder do
     |> String.downcase()
     |> String.pad_leading(@decoded_uuid_length, "0")
     |> case do
-      <<g1::binary-size(8), g2::binary-size(4), g3::binary-size(4), g4::binary-size(4),
-        g5::binary-size(12)>> ->
+      <<g1::binary-size(8), g2::binary-size(4), g3::binary-size(4), g4::binary-size(4), g5::binary-size(12)>> ->
         {:ok, "#{g1}-#{g2}-#{g3}-#{g4}-#{g5}"}
 
       term ->
@@ -63,8 +62,7 @@ defmodule AshUUID.Encoder do
     |> Enum.reduce_while({:ok, {0, 0}}, fn char, {:ok, {acc, step}} ->
       case decode_char(char) do
         {:ok, integer} ->
-          {:cont,
-           {:ok, {acc + integer * Integer.pow(unquote(length(@encoding_alphabet)), step), step + 1}}}
+          {:cont, {:ok, {acc + integer * Integer.pow(unquote(length(@encoding_alphabet)), step), step + 1}}}
 
         {:error, error} ->
           {:halt, {:error, error}}

@@ -25,8 +25,8 @@ defmodule AshUUID.Transformers.BelongsToAttribute do
         |> Enum.find(&(&1.name == relationship.destination_attribute))
 
       source_attribute_exist ||
-      is_nil(destination_attribute) ||
-      destination_attribute.type != AshUUID.UUID
+        is_nil(destination_attribute) ||
+        destination_attribute.type != AshUUID.UUID
     end)
     |> Enum.reduce_while({:ok, dsl_state}, fn relationship, {:ok, dsl_state} ->
       destination_dsl_state = relationship.destination.spark_dsl_config()
@@ -57,8 +57,7 @@ defmodule AshUUID.Transformers.BelongsToAttribute do
         if valid_opts? do
           entity
         else
-          {:error,
-           "Relationship cannot be a primary key unless it is also marked as `allow_nil? false`"}
+          {:error, "Relationship cannot be a primary key unless it is also marked as `allow_nil? false`"}
         end
 
       add_entity(entity_or_error, dsl_state, relationship)
@@ -73,8 +72,7 @@ defmodule AshUUID.Transformers.BelongsToAttribute do
       {:halt,
        {:error,
         DslError.exception(
-          message:
-            "Could not create attribute for belongs_to #{relationship.name}: #{inspect(error)}",
+          message: "Could not create attribute for belongs_to #{relationship.name}: #{inspect(error)}",
           path: [:relationships, relationship.name]
         )}}
 

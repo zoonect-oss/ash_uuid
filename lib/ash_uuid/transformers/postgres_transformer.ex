@@ -11,30 +11,47 @@ defmodule AshUUID.Transformers.PostgresMigrationDefaults do
     migration_defaults =
       attributes
       |> Enum.filter(fn
-        %{type: AshUUID.UUID, constraints: [
-          prefix: _,
-          version: _,
-          encoded?: _,
-          prefixed?: _,
-          migration_default?: true
-        ]} -> true
-        _ -> false
+        %{
+          type: AshUUID.UUID,
+          constraints: [
+            prefix: _,
+            version: _,
+            encoded?: _,
+            prefixed?: _,
+            migration_default?: true
+          ]
+        } ->
+          true
+
+        _ ->
+          false
       end)
       |> Enum.map(fn
-        %{name: name, type: AshUUID.UUID, constraints: [
-          prefix: _,
-          version: 4,
-          encoded?: _,
-          prefixed?: _,
-          migration_default?: true
-        ]} -> {name, "fragment(\"uuid_generate_v4()\")"}
-        %{name: name, type: AshUUID.UUID, constraints: [
-          prefix: _,
-          version: 7,
-          encoded?: _,
-          prefixed?: _,
-          migration_default?: true
-        ]} -> {name, "fragment(\"uuid_generate_v7()\")"}
+        %{
+          name: name,
+          type: AshUUID.UUID,
+          constraints: [
+            prefix: _,
+            version: 4,
+            encoded?: _,
+            prefixed?: _,
+            migration_default?: true
+          ]
+        } ->
+          {name, "fragment(\"uuid_generate_v4()\")"}
+
+        %{
+          name: name,
+          type: AshUUID.UUID,
+          constraints: [
+            prefix: _,
+            version: 7,
+            encoded?: _,
+            prefixed?: _,
+            migration_default?: true
+          ]
+        } ->
+          {name, "fragment(\"uuid_generate_v7()\")"}
       end)
       |> Keyword.merge(Transformer.get_option(dsl_state, [:postgres], :migration_defaults))
 
