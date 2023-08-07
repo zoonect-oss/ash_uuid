@@ -9,7 +9,10 @@ defmodule AshUUID do
 
   use Spark.Dsl.Extension,
     imports: [AshUUID.Macros],
-    transformers: [AshUUID.Transformers.PostgresMigrationDefaults, AshUUID.Transformers.BelongsToAttribute]
+    transformers: [
+      AshUUID.Transformers.PostgresMigrationDefaults,
+      AshUUID.Transformers.BelongsToAttribute
+    ]
 
   @doc "Transform the last element of a module path into a snake-cased atom."
   @doc since: "0.1.0"

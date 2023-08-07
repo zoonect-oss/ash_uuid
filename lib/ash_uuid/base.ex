@@ -21,8 +21,12 @@ defmodule AshUUID.Base do
     |> Enum.reverse()
     |> Enum.reduce_while({:ok, {0, 0}}, fn char, {:ok, {acc, step}} ->
       case decode62_char(char) do
-        {:ok, integer} -> {:cont, {:ok, {acc + integer * Integer.pow(unquote(length(@alphabet)), step), step + 1}}}
-        {:error, error} -> {:halt, {:error, error}}
+        {:ok, integer} ->
+          {:cont,
+           {:ok, {acc + integer * Integer.pow(unquote(length(@alphabet)), step), step + 1}}}
+
+        {:error, error} ->
+          {:halt, {:error, error}}
       end
     end)
     |> case do

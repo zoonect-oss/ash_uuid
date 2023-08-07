@@ -27,28 +27,54 @@ defmodule AshUUID.EncodedV7Test do
       uuid_base62_string = "02tRrww6GFm4urcMhyQpAS"
       uuid_prefixed_base62_string = "#{prefix}_#{uuid_base62_string}"
 
-      assert {:ok, ^uuid_raw} = Ash.Type.apply_constraints(AshUUID.EncodedV7, uuid_raw, [prefix: prefix])
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.apply_constraints(AshUUID.EncodedV7, uuid_raw, prefix: prefix)
 
       assert true == Ash.Type.ash_type?(AshUUID.EncodedV7)
       assert false == Ash.Type.builtin?(EncodedV7)
 
       # from elixir to elixir type instance
-      assert {:ok, ^uuid_base62_string} = Ash.Type.cast_input(AshUUID.EncodedV7, uuid_prefixed_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_base62_string} = Ash.Type.cast_input(AshUUID.EncodedV7, uuid_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_base62_string} = Ash.Type.cast_input(AshUUID.EncodedV7, uuid_string, [prefix: prefix])
-      assert {:ok, ^uuid_base62_string} = Ash.Type.cast_input(AshUUID.EncodedV7, uuid_raw, [prefix: prefix])
+      assert {:ok, ^uuid_base62_string} =
+               Ash.Type.cast_input(AshUUID.EncodedV7, uuid_prefixed_base62_string, prefix: prefix)
+
+      assert {:ok, ^uuid_base62_string} =
+               Ash.Type.cast_input(AshUUID.EncodedV7, uuid_base62_string, prefix: prefix)
+
+      assert {:ok, ^uuid_base62_string} =
+               Ash.Type.cast_input(AshUUID.EncodedV7, uuid_string, prefix: prefix)
+
+      assert {:ok, ^uuid_base62_string} =
+               Ash.Type.cast_input(AshUUID.EncodedV7, uuid_raw, prefix: prefix)
 
       # from postgresql to elixir type instance
-      assert {:ok, ^uuid_base62_string} = Ash.Type.cast_stored(AshUUID.EncodedV7, uuid_raw, [prefix: prefix])
-      assert {:ok, ^uuid_base62_string} = Ash.Type.cast_stored(AshUUID.EncodedV7, uuid_string, [prefix: prefix])
-      assert {:ok, ^uuid_base62_string} = Ash.Type.cast_stored(AshUUID.EncodedV7, uuid_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_base62_string} = Ash.Type.cast_stored(AshUUID.EncodedV7, uuid_prefixed_base62_string, [prefix: prefix])
+      assert {:ok, ^uuid_base62_string} =
+               Ash.Type.cast_stored(AshUUID.EncodedV7, uuid_raw, prefix: prefix)
+
+      assert {:ok, ^uuid_base62_string} =
+               Ash.Type.cast_stored(AshUUID.EncodedV7, uuid_string, prefix: prefix)
+
+      assert {:ok, ^uuid_base62_string} =
+               Ash.Type.cast_stored(AshUUID.EncodedV7, uuid_base62_string, prefix: prefix)
+
+      assert {:ok, ^uuid_base62_string} =
+               Ash.Type.cast_stored(AshUUID.EncodedV7, uuid_prefixed_base62_string,
+                 prefix: prefix
+               )
 
       # from elixir type instance to postgresl
-      assert {:ok, ^uuid_raw} = Ash.Type.dump_to_native(AshUUID.EncodedV7, uuid_prefixed_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_raw} = Ash.Type.dump_to_native(AshUUID.EncodedV7, uuid_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_raw} = Ash.Type.dump_to_native(AshUUID.EncodedV7, uuid_string, [prefix: prefix])
-      assert {:ok, ^uuid_raw} = Ash.Type.dump_to_native(AshUUID.EncodedV7, uuid_raw, [prefix: prefix])
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.dump_to_native(AshUUID.EncodedV7, uuid_prefixed_base62_string,
+                 prefix: prefix
+               )
+
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.dump_to_native(AshUUID.EncodedV7, uuid_base62_string, prefix: prefix)
+
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.dump_to_native(AshUUID.EncodedV7, uuid_string, prefix: prefix)
+
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.dump_to_native(AshUUID.EncodedV7, uuid_raw, prefix: prefix)
 
       assert AshUUID.EncodedV7.EctoType = Ash.Type.ecto_type(AshUUID.EncodedV7)
 
@@ -57,7 +83,7 @@ defmodule AshUUID.EncodedV7Test do
       assert true == Ash.Type.equal?(AshUUID.EncodedV7, uuid_string, uuid_raw)
       assert true == Ash.Type.equal?(AshUUID.EncodedV7, uuid_raw, uuid_raw)
 
-      uuid_generated = Ash.Type.generator(AshUUID.EncodedV7, [prefix: prefix])
+      uuid_generated = Ash.Type.generator(AshUUID.EncodedV7, prefix: prefix)
       assert :b62_string_uuid = AshUUID.format?(uuid_generated)
       assert is_binary(uuid_generated)
       assert [uuid_base62_string] = String.split(uuid_generated, "_")

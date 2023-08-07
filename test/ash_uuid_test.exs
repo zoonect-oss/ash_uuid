@@ -201,7 +201,9 @@ defmodule AshUUIDTest do
       pineapple_smoothie = AshUUID.Test.load!(pineapple_smoothie, :pineapples)
       pineapple_id = pineapple.id
 
-      assert [%AshUUID.Test.Pineapple{id: ^pineapple_id} = loaded_pineapple] = pineapple_smoothie.pineapples
+      assert [%AshUUID.Test.Pineapple{id: ^pineapple_id} = loaded_pineapple] =
+               pineapple_smoothie.pineapples
+
       assert :prefixed_b62_string_uuid = AshUUID.format?(loaded_pineapple.id)
     end
   end

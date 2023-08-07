@@ -27,28 +27,56 @@ defmodule AshUUID.PrefixedV4Test do
       uuid_base62_string = "4EZRFGoZEOuH6eJp3oyIDj"
       uuid_prefixed_base62_string = "#{prefix}_#{uuid_base62_string}"
 
-      assert {:ok, ^uuid_raw} = Ash.Type.apply_constraints(AshUUID.PrefixedV4, uuid_raw, [prefix: prefix])
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.apply_constraints(AshUUID.PrefixedV4, uuid_raw, prefix: prefix)
 
       assert true == Ash.Type.ash_type?(AshUUID.PrefixedV4)
       assert false == Ash.Type.builtin?(PrefixedV4)
 
       # from elixir to elixir type instance
-      assert {:ok, ^uuid_prefixed_base62_string} = Ash.Type.cast_input(AshUUID.PrefixedV4, uuid_prefixed_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_prefixed_base62_string} = Ash.Type.cast_input(AshUUID.PrefixedV4, uuid_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_prefixed_base62_string} = Ash.Type.cast_input(AshUUID.PrefixedV4, uuid_string, [prefix: prefix])
-      assert {:ok, ^uuid_prefixed_base62_string} = Ash.Type.cast_input(AshUUID.PrefixedV4, uuid_raw, [prefix: prefix])
+      assert {:ok, ^uuid_prefixed_base62_string} =
+               Ash.Type.cast_input(AshUUID.PrefixedV4, uuid_prefixed_base62_string,
+                 prefix: prefix
+               )
+
+      assert {:ok, ^uuid_prefixed_base62_string} =
+               Ash.Type.cast_input(AshUUID.PrefixedV4, uuid_base62_string, prefix: prefix)
+
+      assert {:ok, ^uuid_prefixed_base62_string} =
+               Ash.Type.cast_input(AshUUID.PrefixedV4, uuid_string, prefix: prefix)
+
+      assert {:ok, ^uuid_prefixed_base62_string} =
+               Ash.Type.cast_input(AshUUID.PrefixedV4, uuid_raw, prefix: prefix)
 
       # from postgresql to elixir type instance
-      assert {:ok, ^uuid_prefixed_base62_string} = Ash.Type.cast_stored(AshUUID.PrefixedV4, uuid_raw, [prefix: prefix])
-      assert {:ok, ^uuid_prefixed_base62_string} = Ash.Type.cast_stored(AshUUID.PrefixedV4, uuid_string, [prefix: prefix])
-      assert {:ok, ^uuid_prefixed_base62_string} = Ash.Type.cast_stored(AshUUID.PrefixedV4, uuid_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_prefixed_base62_string} = Ash.Type.cast_stored(AshUUID.PrefixedV4, uuid_prefixed_base62_string, [prefix: prefix])
+      assert {:ok, ^uuid_prefixed_base62_string} =
+               Ash.Type.cast_stored(AshUUID.PrefixedV4, uuid_raw, prefix: prefix)
+
+      assert {:ok, ^uuid_prefixed_base62_string} =
+               Ash.Type.cast_stored(AshUUID.PrefixedV4, uuid_string, prefix: prefix)
+
+      assert {:ok, ^uuid_prefixed_base62_string} =
+               Ash.Type.cast_stored(AshUUID.PrefixedV4, uuid_base62_string, prefix: prefix)
+
+      assert {:ok, ^uuid_prefixed_base62_string} =
+               Ash.Type.cast_stored(AshUUID.PrefixedV4, uuid_prefixed_base62_string,
+                 prefix: prefix
+               )
 
       # from elixir type instance to postgresl
-      assert {:ok, ^uuid_raw} = Ash.Type.dump_to_native(AshUUID.PrefixedV4, uuid_prefixed_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_raw} = Ash.Type.dump_to_native(AshUUID.PrefixedV4, uuid_base62_string, [prefix: prefix])
-      assert {:ok, ^uuid_raw} = Ash.Type.dump_to_native(AshUUID.PrefixedV4, uuid_string, [prefix: prefix])
-      assert {:ok, ^uuid_raw} = Ash.Type.dump_to_native(AshUUID.PrefixedV4, uuid_raw, [prefix: prefix])
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.dump_to_native(AshUUID.PrefixedV4, uuid_prefixed_base62_string,
+                 prefix: prefix
+               )
+
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.dump_to_native(AshUUID.PrefixedV4, uuid_base62_string, prefix: prefix)
+
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.dump_to_native(AshUUID.PrefixedV4, uuid_string, prefix: prefix)
+
+      assert {:ok, ^uuid_raw} =
+               Ash.Type.dump_to_native(AshUUID.PrefixedV4, uuid_raw, prefix: prefix)
 
       assert AshUUID.PrefixedV4.EctoType = Ash.Type.ecto_type(AshUUID.PrefixedV4)
 
@@ -57,7 +85,7 @@ defmodule AshUUID.PrefixedV4Test do
       assert true == Ash.Type.equal?(AshUUID.PrefixedV4, uuid_string, uuid_raw)
       assert true == Ash.Type.equal?(AshUUID.PrefixedV4, uuid_raw, uuid_raw)
 
-      uuid_generated = Ash.Type.generator(AshUUID.PrefixedV4, [prefix: prefix])
+      uuid_generated = Ash.Type.generator(AshUUID.PrefixedV4, prefix: prefix)
       assert :prefixed_b62_string_uuid = AshUUID.format?(uuid_generated)
       assert is_binary(uuid_generated)
       assert [^prefix, uuid_base62_string] = String.split(uuid_generated, "_")
