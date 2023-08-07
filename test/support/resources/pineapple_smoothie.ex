@@ -13,7 +13,7 @@ defmodule AshUUID.Test.PineappleSmoothie do
   end
 
   attributes do
-    uuid_pk :id
+    uuid_attribute :id
 
     create_timestamp :inserted_at
   end

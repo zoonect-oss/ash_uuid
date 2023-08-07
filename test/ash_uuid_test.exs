@@ -31,6 +31,12 @@ defmodule AshUUIDTest do
       assert {:ok, %{version: 4}} = Uniq.UUID.info(avocado.id)
       assert :string_uuid = AshUUID.format?(avocado.avocado_smoothie_id)
       assert {:ok, %{version: 4}} = Uniq.UUID.info(avocado.avocado_smoothie_id)
+
+      avocado_smoothie = AshUUID.Test.load!(avocado_smoothie, :avocados)
+      avocado_id = avocado.id
+
+      assert [%AshUUID.Test.Avocado{id: ^avocado_id} = loaded_avocado] = avocado_smoothie.avocados
+      assert :string_uuid = AshUUID.format?(loaded_avocado.id)
     end
 
     test "initial testing bananas" do
@@ -53,6 +59,12 @@ defmodule AshUUIDTest do
       assert {:ok, %{version: 7}} = Uniq.UUID.info(banana.id)
       assert :string_uuid = AshUUID.format?(banana.banana_smoothie_id)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(banana.banana_smoothie_id)
+
+      banana_smoothie = AshUUID.Test.load!(banana_smoothie, :bananas)
+      banana_id = banana.id
+
+      assert [%AshUUID.Test.Banana{id: ^banana_id} = loaded_banana] = banana_smoothie.bananas
+      assert :string_uuid = AshUUID.format?(loaded_banana.id)
     end
 
     test "initial testing limes" do
@@ -78,6 +90,12 @@ defmodule AshUUIDTest do
       assert :b62_string_uuid = AshUUID.format?(lime.lime_smoothie_id)
       assert {:ok, string_uuid} = AshUUID.UUID.decode62(lime.lime_smoothie_id)
       assert {:ok, %{version: 4}} = Uniq.UUID.info(string_uuid)
+
+      lime_smoothie = AshUUID.Test.load!(lime_smoothie, :limes)
+      lime_id = lime.id
+
+      assert [%AshUUID.Test.Lime{id: ^lime_id} = loaded_lime] = lime_smoothie.limes
+      assert :b62_string_uuid = AshUUID.format?(loaded_lime.id)
     end
 
     test "initial testing mangos" do
@@ -103,6 +121,12 @@ defmodule AshUUIDTest do
       assert :b62_string_uuid = AshUUID.format?(mango.mango_smoothie_id)
       assert {:ok, string_uuid} = AshUUID.UUID.decode62(mango.mango_smoothie_id)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      mango_smoothie = AshUUID.Test.load!(mango_smoothie, :mangos)
+      mango_id = mango.id
+
+      assert [%AshUUID.Test.Mango{id: ^mango_id} = loaded_mango] = mango_smoothie.mangos
+      assert :b62_string_uuid = AshUUID.format?(loaded_mango.id)
     end
 
     test "initial testing oranges" do
@@ -131,6 +155,12 @@ defmodule AshUUIDTest do
       assert ["orange-smoothie", b62_string_uuid] = String.split(orange.orange_smoothie_id, "_")
       assert {:ok, string_uuid} = AshUUID.UUID.decode62(b62_string_uuid)
       assert {:ok, %{version: 4}} = Uniq.UUID.info(string_uuid)
+
+      orange_smoothie = AshUUID.Test.load!(orange_smoothie, :oranges)
+      orange_id = orange.id
+
+      assert [%AshUUID.Test.Orange{id: ^orange_id} = loaded_orange] = orange_smoothie.oranges
+      assert :prefixed_b62_string_uuid = AshUUID.format?(loaded_orange.id)
     end
 
     test "initial testing pineapples" do
@@ -167,6 +197,12 @@ defmodule AshUUIDTest do
 
       assert {:ok, string_uuid} = AshUUID.UUID.decode62(b62_string_uuid)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      pineapple_smoothie = AshUUID.Test.load!(pineapple_smoothie, :pineapples)
+      pineapple_id = pineapple.id
+
+      assert [%AshUUID.Test.Pineapple{id: ^pineapple_id} = loaded_pineapple] = pineapple_smoothie.pineapples
+      assert :prefixed_b62_string_uuid = AshUUID.format?(loaded_pineapple.id)
     end
   end
 end

@@ -13,7 +13,7 @@ defmodule AshUUID.Test.LimeSmoothie do
   end
 
   attributes do
-    uuid_pk :id, version: 4, prefixed?: false
+    uuid_attribute :id, version: 4, prefixed?: false
 
     create_timestamp :inserted_at
   end

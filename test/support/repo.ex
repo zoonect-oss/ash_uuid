@@ -6,6 +6,6 @@ defmodule AshUUID.Test.Repo do
   @doc false
   @impl AshPostgres.Repo
   def installed_extensions do
-    ["uuid-ossp", "citext", AshUUID.PostgresExtension.extension()]
+    ["uuid-ossp", "citext", AshUUID.PostgresExtension]
   end
 end

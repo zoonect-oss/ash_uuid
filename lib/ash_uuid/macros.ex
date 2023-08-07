@@ -1,9 +1,9 @@
 defmodule AshUUID.Macros do
   @moduledoc false
 
-  defmacro uuid_pk(name, overrides \\ []) do
-    opts = AshUUID.Config.get_config(overrides)
-    type = AshUUID.uuid_type(opts)
+  defmacro uuid_attribute(name, opts \\ []) do
+    computed_opts = AshUUID.Config.get_config(opts)
+    type = AshUUID.uuid_type(computed_opts)
 
     default_prefix =
       __CALLER__.module
@@ -12,9 +12,9 @@ defmodule AshUUID.Macros do
       |> Macro.underscore()
       |> String.replace("_", "-")
 
-    prefix = Keyword.get(overrides, :prefix, default_prefix)
+    prefix = Keyword.get(opts, :prefix, default_prefix)
 
-    constraints = [prefix: prefix, migration_default?: opts.migration_default?]
+    constraints = [prefix: prefix, migration_default?: computed_opts.migration_default?]
 
     default =
       quote do
@@ -22,19 +22,20 @@ defmodule AshUUID.Macros do
       end
 
     field_opts =
-      overrides
+      opts
       |> Keyword.delete(:version)
       |> Keyword.delete(:encoded?)
       |> Keyword.delete(:prefixed?)
       |> Keyword.delete(:migration_default?)
       |> Keyword.delete(:prefix)
-      |> Keyword.merge(primary_key?: true, allow_nil?: false)
+      |> Keyword.put_new(:primary_key?, true)
+      |> Keyword.put_new(:allow_nil?, false)
       |> Keyword.put_new(:default, default)
       |> Keyword.put_new(:writable?, false)
       |> Keyword.update(:constraints, constraints, fn kw ->
         kw
         |> Keyword.put(:prefix, prefix)
-        |> Keyword.put(:migration_default?, opts.migration_default?)
+        |> Keyword.put(:migration_default?, computed_opts.migration_default?)
       end)
 
     quote do

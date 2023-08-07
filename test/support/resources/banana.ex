@@ -13,7 +13,7 @@ defmodule AshUUID.Test.Banana do
   end
 
   attributes do
-    uuid_pk :id, encoded?: false, prefixed?: false
+    uuid_attribute :id, encoded?: false, prefixed?: false
 
     create_timestamp :inserted_at
   end

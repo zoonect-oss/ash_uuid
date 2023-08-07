@@ -13,7 +13,7 @@ defmodule AshUUID.Test.Mango do
   end
 
   attributes do
-    uuid_pk :id, prefixed?: false
+    uuid_attribute :id, prefixed?: false
 
     create_timestamp :inserted_at
   end

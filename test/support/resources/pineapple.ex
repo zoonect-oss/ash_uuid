@@ -13,8 +13,8 @@ defmodule AshUUID.Test.Pineapple do
   end
 
   attributes do
-    uuid_pk :id
-    uuid_pk :secondary_id, prefix: "pnp"
+    uuid_attribute :id
+    uuid_attribute :secondary_id, prefix: "pnp", primary_key?: false
 
     create_timestamp :inserted_at
   end
