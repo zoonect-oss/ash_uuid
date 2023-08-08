@@ -44,8 +44,8 @@ defmodule AshUUID.MixProject do
     [
       {:uniq, "~> 0.6"},
       {:ash, "~> 2.13"},
-      # {:ash_postgres, "~> 1.3"},
-      {:ash_postgres, github: "zoonect-oss/ash_postgres", branch: "custom-extensions"},
+      {:ash_postgres, "~> 1.3"},
+      # {:ash_postgres, github: "zoonect-oss/ash_postgres", branch: "custom-extensions"},
 
       # Testing, documentation, and release tools
       {:mix_test_interactive, ">= 0.0.0", only: :test, runtime: false},

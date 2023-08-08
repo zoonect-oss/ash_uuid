@@ -20,8 +20,13 @@ end
 
 ### `lib/myapp/repo.ex`:
 
+Using the PostgresExtension allows postgres-side uuid-v7 generation.
+
+Requires using this fork of [ash_postgres](https://github.com/zoonect-oss/ash_postgres/tree/custom-extensions) (adding `{:ash_postgres, github: "zoonect-oss/ash_postgres", branch: "custom-extensions"}` in your app `mix.exs` deps) until this [PR](https://github.com/ash-project/ash_postgres/pull/162) will be merged.
+
 ```elixir
 # App: Postgres migration defaults, not required
+`
 defmodule Myapp.Repo do
   use AshPostgres.Repo, otp_app: :myapp
 
