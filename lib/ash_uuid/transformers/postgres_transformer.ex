@@ -55,8 +55,7 @@ defmodule AshUUID.Transformers.PostgresMigrationDefaults do
       end)
       |> Keyword.merge(Transformer.get_option(dsl_state, [:postgres], :migration_defaults))
 
-    dsl_state =
-      Transformer.set_option(dsl_state, [:postgres], :migration_defaults, migration_defaults)
+    dsl_state = Transformer.set_option(dsl_state, [:postgres], :migration_defaults, migration_defaults)
 
     {:ok, dsl_state}
   end

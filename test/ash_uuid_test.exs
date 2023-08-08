@@ -202,8 +202,7 @@ defmodule AshUUIDTest do
 
       assert :prefixed = AshUUID.identify_format(pineapple.pineapple_smoothie_id)
 
-      assert ["pineapple-smoothie", b62_string_uuid] =
-               String.split(pineapple.pineapple_smoothie_id, "_")
+      assert ["pineapple-smoothie", b62_string_uuid] = String.split(pineapple.pineapple_smoothie_id, "_")
 
       assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
@@ -211,8 +210,7 @@ defmodule AshUUIDTest do
       pineapple_smoothie = AshUUID.Test.load!(pineapple_smoothie, :pineapples)
       pineapple_id = pineapple.id
 
-      assert [%AshUUID.Test.Pineapple{id: ^pineapple_id} = loaded_pineapple] =
-               pineapple_smoothie.pineapples
+      assert [%AshUUID.Test.Pineapple{id: ^pineapple_id} = loaded_pineapple] = pineapple_smoothie.pineapples
 
       assert :prefixed = AshUUID.identify_format(loaded_pineapple.id)
 

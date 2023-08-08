@@ -18,10 +18,31 @@ end
 
 ## Configuration
 
+### `lib/myapp/repo.ex`:
+
+```elixir
+# App: Postgres migration defaults, not required
+defmodule Myapp.Repo do
+  use AshPostgres.Repo, otp_app: :myapp
+
+  @impl AshPostgres.Repo
+  def installed_extensions do
+    ["ash-functions", "uuid-ossp", "citext", AshUUID.PostgresExtension]
+  end
+end
+```
+
 ### `config/config.exs`:
 
 ```elixir
-# Ash: Type shorthands, not required, you can add only what you need
+# AshUUID: Customized defaults, not required
+config :ash_uuid, :ash_uuid,
+  version: 7, # default
+  encoded?: true, # default
+  prefixed?: true, # default
+  migration_default?: true # default to false
+
+# Ash: Type shorthands, not required
 config :ash, :custom_types, uuid: AshUUID.UUID
 
 # Ash: Default belongs_to type, not required

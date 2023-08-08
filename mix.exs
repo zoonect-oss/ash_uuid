@@ -15,6 +15,7 @@ defmodule AshUUID.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       preferred_cli_env: preferred_cli_env(),
       cli: cli(),
+      dialyzer: dialyzer(),
       deps: deps(),
       package: package(),
       docs: docs(),
@@ -32,6 +33,12 @@ defmodule AshUUID.MixProject do
 
   defp elixirc_paths(:test), do: ~w(lib test/support)
   defp elixirc_paths(_), do: ~w(lib)
+
+  defp dialyzer do
+    [
+      ignore_warnings: ".dialyzer-ignore.exs"
+    ]
+  end
 
   defp deps do
     [
