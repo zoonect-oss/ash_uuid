@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.2.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.1.0...v0.2.0) (2023-08-08)
+
+
+
+
+### Features:
+
+* release preparation
+
 ## [v0.1.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.1.0...v0.1.0) (2023-08-08)
 
 
