@@ -11,18 +11,28 @@
 ```elixir
 def deps do
   [
-    {:ash_uuid, "~> 0.1"},
+    {:ash_uuid, "~> 0.2"},
   ]
 end
 ```
+
+## Adoption
+
+Adoption:
+
+- add `{:ash_uuid, "~> 0.2"}`` to your `mix.exs`` project deps;
+
+- add `AshUUID.PostgresExtension`` to your app Repo's installed_extensions and set AshUUID config `migration_default?: true` if Postgres-side UUIDs generation is needed;
+
+- use the extension in your resources `use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]`;
+
+- simply use that for your fields `uuid_attribute :id`.
 
 ## Configuration
 
 ### `lib/myapp/repo.ex`:
 
 Using the PostgresExtension allows postgres-side uuid-v7 generation.
-
-Requires using this fork of [ash_postgres](https://github.com/zoonect-oss/ash_postgres/tree/custom-extensions) (adding `{:ash_postgres, github: "zoonect-oss/ash_postgres", branch: "custom-extensions"}` in your app `mix.exs` deps) until this [PR](https://github.com/ash-project/ash_postgres/pull/162) will be merged.
 
 ```elixir
 # App: Postgres migration defaults, not required
