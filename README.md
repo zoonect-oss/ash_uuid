@@ -1,10 +1,10 @@
 # AshUUID
 
 [![Hex](http://img.shields.io/hexpm/v/ash_uuid.svg?style=flat)](https://hex.pm/packages/ash_uuid)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-purple.svg)](https://hexdocs.pm/ash_uuid/)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-purple.svg)](https://hexdocs.pm/ash_uuid)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/zoonect-oss/ash_uuid/ci.yml)](https://github.com/zoonect-oss/ash_uuid)
 [![License](https://img.shields.io/github/license/zoonect-oss/ash_uuid?color=blue)](https://github.com/zoonect-oss/ash_uuid/blob/main/LICENSE.md)
-[![GitHub Stars](https://img.shields.io/github/stars/zoonect-oss/ash_uuid?color=ffd700&label=github&logo=github)](https://github.com/zoonect-oss/ash_uuid)
+[![GitHub Stars](https://img.shields.io/github/stars/zoonect-oss/ash_uuid?color=ffd700&label=github&logo=github)](https://github.com/zoonect-oss/ash_uuid/stargazers)
 
 ## Installation
 
