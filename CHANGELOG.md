@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.2.2](https://github.com/zoonect-oss/ash_uuid/compare/v0.2.1...v0.2.2) (2023-08-09)
+
+
+
+
+### Bug Fixes:
+
+* update ash_postgres deps version with CustomExtension feature merged
+
 ## [v0.2.1](https://github.com/zoonect-oss/ash_uuid/compare/v0.2.0...v0.2.1) (2023-08-08)
 
 
