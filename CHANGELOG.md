@@ -5,6 +5,19 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.3.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.2.2...v0.3.0) (2023-08-12)
+
+
+
+
+### Features:
+
+* add supports for many_to_many relationships and resources with relation to itself; resolve #1 and #2
+
+### Bug Fixes:
+
+* unsetting migration default for nullable fields
+
 ## [v0.2.2](https://github.com/zoonect-oss/ash_uuid/compare/v0.2.1...v0.2.2) (2023-08-09)
 
 
