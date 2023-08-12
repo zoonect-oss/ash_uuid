@@ -8,6 +8,9 @@ defmodule AshUUID.Test do
     resource AshUUID.Test.AvocadoSmoothie
     resource AshUUID.Test.Banana
     resource AshUUID.Test.BananaSmoothie
+    resource AshUUID.Test.Blib
+    resource AshUUID.Test.BlibBlob
+    resource AshUUID.Test.Blob
     resource AshUUID.Test.Lime
     resource AshUUID.Test.LimeSmoothie
     resource AshUUID.Test.Mango
@@ -16,5 +19,6 @@ defmodule AshUUID.Test do
     resource AshUUID.Test.OrangeSmoothie
     resource AshUUID.Test.Pineapple
     resource AshUUID.Test.PineappleSmoothie
+    resource AshUUID.Test.Template
   end
 end

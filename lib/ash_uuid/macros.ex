@@ -18,7 +18,7 @@ defmodule AshUUID.Macros do
       version: computed_opts.version,
       encoded?: computed_opts.encoded?,
       prefixed?: computed_opts.prefixed?,
-      migration_default?: computed_opts.migration_default?
+      migration_default?: !Keyword.get(opts, :allow_nil?, false) && computed_opts.migration_default?
     ]
 
     default =
@@ -43,7 +43,7 @@ defmodule AshUUID.Macros do
         |> Keyword.put(:version, computed_opts.version)
         |> Keyword.put(:encoded?, computed_opts.encoded?)
         |> Keyword.put(:prefixed?, computed_opts.prefixed?)
-        |> Keyword.put(:migration_default?, computed_opts.migration_default?)
+        |> Keyword.put(:migration_default?, !Keyword.get(opts, :allow_nil?, false) && computed_opts.migration_default?)
       end)
 
     quote do

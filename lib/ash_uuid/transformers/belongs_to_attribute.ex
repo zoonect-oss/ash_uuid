@@ -12,46 +12,46 @@ defmodule AshUUID.Transformers.BelongsToAttribute do
     dsl_state
     |> Transformer.get_entities([:relationships])
     |> Enum.filter(&(&1.type == :belongs_to && &1.define_attribute?))
-    |> Enum.reject(fn relationship ->
-      source_attribute_exist =
-        dsl_state
-        |> Transformer.get_entities([:attributes])
-        |> Enum.find(&(Map.get(&1, :name) == relationship.source_attribute))
-
-      destination_dsl_state = relationship.destination.spark_dsl_config()
-
-      destination_attribute =
-        Transformer.get_entities(destination_dsl_state, [:attributes])
-        |> Enum.find(&(&1.name == relationship.destination_attribute))
-
-      source_attribute_exist ||
-        is_nil(destination_attribute) ||
-        destination_attribute.type != AshUUID.UUID
-    end)
+    |> Enum.reject(reject_yet_existent(dsl_state))
     |> Enum.reduce_while({:ok, dsl_state}, fn relationship, {:ok, dsl_state} ->
-      destination_dsl_state = relationship.destination.spark_dsl_config()
+      source_module = Transformer.get_persisted(dsl_state, :module)
+
+      destination_dsl_state =
+        if relationship.destination != source_module do
+          relationship.destination.spark_dsl_config()
+        else
+          dsl_state
+        end
 
       destination_attribute =
         Transformer.get_entities(destination_dsl_state, [:attributes])
         |> Enum.find(&(&1.name == relationship.destination_attribute))
 
-      entity =
-        Transformer.build_entity(@extension, [:attributes], :attribute,
-          name: relationship.source_attribute,
-          type: destination_attribute.type,
-          allow_nil?:
-            if relationship.primary_key? do
-              false
-            else
-              relationship.allow_nil?
-            end,
-          writable?: relationship.attribute_writable?,
-          private?: !relationship.attribute_writable?,
-          primary_key?: relationship.primary_key?,
-          constraints: destination_attribute.constraints
-        )
+      attribute_opts = [
+        name: relationship.source_attribute,
+        type: destination_attribute.type,
+        allow_nil?:
+          if relationship.primary_key? do
+            false
+          else
+            relationship.allow_nil?
+          end,
+        writable?: relationship.attribute_writable?,
+        private?: !relationship.attribute_writable?,
+        primary_key?: relationship.primary_key?
+      ]
 
-      valid_opts? = not (relationship.primary_key? && relationship.allow_nil?)
+      migration_default? =
+        !Keyword.get(attribute_opts, :allow_nil?, false) && destination_attribute.constraints[:migration_default?]
+
+      attribute_constraints = Keyword.put(destination_attribute.constraints, :migration_default?, migration_default?)
+      attribute_opts = Keyword.put(attribute_opts, :constraints, attribute_constraints)
+
+      entity = Transformer.build_entity(@extension, [:attributes], :attribute, attribute_opts)
+
+      valid_opts? =
+        !(relationship.primary_key? && relationship.allow_nil?) &&
+          !(relationship.allow_nil? && attribute_constraints[:migration_default?])
 
       entity_or_error =
         if valid_opts? do
@@ -62,6 +62,32 @@ defmodule AshUUID.Transformers.BelongsToAttribute do
 
       add_entity(entity_or_error, dsl_state, relationship)
     end)
+  end
+
+  defp reject_yet_existent(dsl_state) do
+    fn relationship ->
+      source_module = Transformer.get_persisted(dsl_state, :module)
+
+      source_attribute_exist =
+        dsl_state
+        |> Transformer.get_entities([:attributes])
+        |> Enum.find(&(Map.get(&1, :name) == relationship.source_attribute))
+
+      destination_dsl_state =
+        if relationship.destination != source_module do
+          relationship.destination.spark_dsl_config()
+        else
+          dsl_state
+        end
+
+      destination_attribute =
+        Transformer.get_entities(destination_dsl_state, [:attributes])
+        |> Enum.find(&(&1.name == relationship.destination_attribute))
+
+      source_attribute_exist ||
+        is_nil(destination_attribute) ||
+        destination_attribute.type != AshUUID.UUID
+    end
   end
 
   defp add_entity({:ok, attribute}, dsl_state, _relationship),

@@ -216,5 +216,103 @@ defmodule AshUUIDTest do
 
       assert pineapple_smoothie.id == pineapple.pineapple_smoothie_id
     end
+
+    test "testing blibs, blobs and blib_blobs" do
+      blib =
+        AshUUID.Test.Blib
+        |> Ash.Changeset.for_create(:create, %{})
+        |> AshUUID.Test.create!()
+
+      assert %AshUUID.Test.Blib{} = blib
+      assert :encoded = AshUUID.identify_format(blib.id)
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(blib.id)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      blob =
+        AshUUID.Test.Blob
+        |> Ash.Changeset.for_create(:create, %{})
+        |> AshUUID.Test.create!()
+
+      assert %AshUUID.Test.Blob{} = blob
+      assert :encoded = AshUUID.identify_format(blob.id)
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(blob.id)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      blib_blob =
+        AshUUID.Test.BlibBlob
+        |> Ash.Changeset.for_create(:create, %{blib_id: blib.id, blob_id: blob.id})
+        |> AshUUID.Test.create!()
+
+      assert %AshUUID.Test.BlibBlob{} = blib_blob
+
+      {:ok, [blob]} = AshUUID.Test.read(AshUUID.Test.Blob)
+
+      assert %AshUUID.Test.Blob{} = blob
+
+      [blib_blob] = blob.blibs_blobs
+
+      assert %AshUUID.Test.BlibBlob{} = blib_blob
+      assert :encoded = AshUUID.identify_format(blib_blob.blib_id)
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(blib_blob.blib_id)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+      assert :encoded = AshUUID.identify_format(blib_blob.blob_id)
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(blib_blob.blob_id)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      blib = blib_blob.blib
+
+      assert %AshUUID.Test.Blib{} = blib
+
+      assert :encoded = AshUUID.identify_format(blob.id)
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(blob.id)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+    end
+
+    test "testing templates" do
+      source_template =
+        AshUUID.Test.Template
+        |> Ash.Changeset.for_create(:create, %{})
+        |> AshUUID.Test.create!()
+
+      assert %AshUUID.Test.Template{} = source_template
+      assert :prefixed = AshUUID.identify_format(source_template.id)
+      assert ["template", b62_string_uuid] = String.split(source_template.id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      derived_template =
+        AshUUID.Test.Template
+        |> Ash.Changeset.for_create(:create, %{from_template_id: source_template.id})
+        |> AshUUID.Test.create!()
+
+      assert %AshUUID.Test.Template{} = derived_template
+      assert :prefixed = AshUUID.identify_format(derived_template.id)
+      assert ["template", b62_string_uuid] = String.split(derived_template.id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      assert :prefixed = AshUUID.identify_format(derived_template.from_template_id)
+      assert ["template", b62_string_uuid] = String.split(derived_template.from_template_id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      template_with_source = AshUUID.Test.load!(derived_template, :from_template)
+      source_template_id = source_template.id
+
+      assert %AshUUID.Test.Template{id: ^source_template_id} =
+               loaded_source_template = template_with_source.from_template
+
+      assert :prefixed = AshUUID.identify_format(loaded_source_template.id)
+
+      assert source_template.id == derived_template.from_template_id
+
+      template_with_derivations = AshUUID.Test.load!(source_template, :derived_templates)
+      derived_template_id = derived_template.id
+
+      assert [%AshUUID.Test.Template{id: ^derived_template_id} = loaded_derived_template] =
+               template_with_derivations.derived_templates
+
+      assert :prefixed = AshUUID.identify_format(loaded_derived_template.id)
+    end
   end
 end

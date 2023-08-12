@@ -51,7 +51,7 @@ end
 
 ```elixir
 # AshUUID: Customized defaults, not required
-config :ash_uuid, :ash_uuid,
+config :myapp, :ash_uuid,
   version: 7, # default
   encoded?: true, # default
   prefixed?: true, # default
