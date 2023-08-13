@@ -1,5 +1,6 @@
 [
   tools: [
+    doctor: false,
     format: "mix format",
     outdated: "mix hex.outdated",
     deps_audit: "mix deps.audit",

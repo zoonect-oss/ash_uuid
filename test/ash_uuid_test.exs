@@ -314,5 +314,31 @@ defmodule AshUUIDTest do
 
       assert :prefixed = AshUUID.identify_format(loaded_derived_template.id)
     end
+
+    test "testing volatile things" do
+      volatile_thing =
+        AshUUID.Test.VolatileThing
+        |> Ash.Changeset.for_create(:create, %{})
+        |> AshUUID.Test.create!()
+
+      assert %AshUUID.Test.VolatileThing{} = volatile_thing
+      assert :prefixed = AshUUID.identify_format(volatile_thing.id)
+      assert ["volatile-thing", b62_string_uuid] = String.split(volatile_thing.id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+    end
+
+    test "testing embedded things" do
+      embedded_thing =
+        AshUUID.Test.EmbeddedThing
+        |> Ash.Changeset.for_create(:create, %{})
+        |> AshUUID.Test.create!()
+
+      assert %AshUUID.Test.EmbeddedThing{} = embedded_thing
+      assert :prefixed = AshUUID.identify_format(embedded_thing.id)
+      assert ["embedded-thing", b62_string_uuid] = String.split(embedded_thing.id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+    end
   end
 end
