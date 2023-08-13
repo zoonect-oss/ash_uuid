@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.4.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.3.0...v0.4.0) (2023-08-13)
+
+
+
+
+### Features:
+
+* add supports for volatile and embedded resources; resolve #3
+
 ## [v0.3.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.2.2...v0.3.0) (2023-08-12)
 
 
