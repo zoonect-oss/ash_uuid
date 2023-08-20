@@ -364,7 +364,9 @@ defmodule AshUUIDTest do
 
       assert %AshUUID.Test.WrapperThing{id: ^wrapper_thing_id} = reloaded_wrapper_thing
       assert %AshUUID.Test.EmbeddedThing{name: "test1"} = reloaded_wrapper_thing.embed
-      assert [%AshUUID.Test.EmbeddedThing{name: "test2"}, %AshUUID.Test.EmbeddedThing{name: "test3"}] = reloaded_wrapper_thing.embeds
+
+      assert [%AshUUID.Test.EmbeddedThing{name: "test2"}, %AshUUID.Test.EmbeddedThing{name: "test3"}] =
+               reloaded_wrapper_thing.embeds
     end
   end
 end
