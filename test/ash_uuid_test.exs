@@ -340,5 +340,31 @@ defmodule AshUUIDTest do
       assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
     end
+
+    test "testing wrapper things" do
+      wrapper_thing =
+        AshUUID.Test.WrapperThing
+        |> Ash.Changeset.for_create(:create, %{embed: %{name: "test1"}, embeds: [%{name: "test2"}, %{name: "test3"}]})
+        |> AshUUID.Test.create!()
+
+      assert %AshUUID.Test.WrapperThing{} = wrapper_thing
+      assert :prefixed = AshUUID.identify_format(wrapper_thing.id)
+      assert ["wrapper-thing", b62_string_uuid] = String.split(wrapper_thing.id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      assert %AshUUID.Test.EmbeddedThing{} = wrapper_thing.embed
+      assert :prefixed = AshUUID.identify_format(wrapper_thing.embed.id)
+      assert ["embedded-thing", b62_string_uuid] = String.split(wrapper_thing.embed.id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      reloaded_wrapper_thing = AshUUID.Test.reload!(wrapper_thing)
+      wrapper_thing_id = wrapper_thing.id
+
+      assert %AshUUID.Test.WrapperThing{id: ^wrapper_thing_id} = reloaded_wrapper_thing
+      assert %AshUUID.Test.EmbeddedThing{name: "test1"} = reloaded_wrapper_thing.embed
+      assert [%AshUUID.Test.EmbeddedThing{name: "test2"}, %AshUUID.Test.EmbeddedThing{name: "test3"}] = reloaded_wrapper_thing.embeds
+    end
   end
 end

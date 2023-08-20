@@ -9,9 +9,11 @@ defmodule AshUUID.Test.EmbeddedThing do
 
   attributes do
     uuid_attribute :id
+
+    attribute :name, :string
   end
 
   actions do
-    defaults [:create]
+    defaults [:create, :read, :update]
   end
 end

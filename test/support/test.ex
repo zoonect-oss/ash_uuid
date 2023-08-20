@@ -22,5 +22,6 @@ defmodule AshUUID.Test do
     resource AshUUID.Test.PineappleSmoothie
     resource AshUUID.Test.Template
     resource AshUUID.Test.VolatileThing
+    resource AshUUID.Test.WrapperThing
   end
 end
