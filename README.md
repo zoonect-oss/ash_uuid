@@ -11,7 +11,7 @@
 ```elixir
 def deps do
   [
-    {:ash_uuid, "~> 0.4"},
+    {:ash_uuid, "~> 0.5"},
   ]
 end
 ```
@@ -20,7 +20,7 @@ end
 
 Adoption:
 
-- add `{:ash_uuid, "~> 0.4"}`` to your `mix.exs`` project deps;
+- add `{:ash_uuid, "~> 0.5"}`` to your `mix.exs`` project deps;
 
 - add `AshUUID.PostgresExtension`` to your app Repo's installed_extensions and set AshUUID config `migration_default?: true` if Postgres-side UUIDs generation is needed;
 
