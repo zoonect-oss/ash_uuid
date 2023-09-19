@@ -61,5 +61,6 @@ if Mix.env() == :test do
     version: 7,
     encoded?: true,
     prefixed?: true,
-    migration_default?: true
+    migration_default?: true,
+    strict?: true
 end

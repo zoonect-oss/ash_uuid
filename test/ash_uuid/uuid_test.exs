@@ -19,7 +19,7 @@ defmodule AshUUID.UUIDTest do
 
     test "testing raw version 4" do
       prefix = "acct"
-      constraints = [prefix: prefix, version: 4, encoded?: false, prefixed?: false]
+      constraints = [prefix: prefix, version: 4, encoded?: false, prefixed?: false, strict?: true]
 
       raw_uuid = "8b264e66-70f3-44f4-af16-16f5535855bb"
       integer_uuid = Uniq.UUID.string_to_binary!(raw_uuid)
@@ -58,7 +58,7 @@ defmodule AshUUID.UUIDTest do
 
     test "testing raw version 7" do
       prefix = "acct"
-      constraints = [prefix: prefix, version: 7, encoded?: false, prefixed?: false]
+      constraints = [prefix: prefix, version: 7, encoded?: false, prefixed?: false, strict?: true]
 
       raw_uuid = "0188aadc-f449-7818-8862-5eff12733f64"
       integer_uuid = Uniq.UUID.string_to_binary!(raw_uuid)
@@ -97,7 +97,7 @@ defmodule AshUUID.UUIDTest do
 
     test "testing encoded version 4" do
       prefix = "acct"
-      constraints = [prefix: prefix, version: 4, encoded?: true, prefixed?: false]
+      constraints = [prefix: prefix, version: 4, encoded?: true, prefixed?: false, strict?: true]
 
       raw_uuid = "8b264e66-70f3-44f4-af16-16f5535855bb"
       integer_uuid = Uniq.UUID.string_to_binary!(raw_uuid)
@@ -137,7 +137,7 @@ defmodule AshUUID.UUIDTest do
 
     test "testing encoded version 7" do
       prefix = "acct"
-      constraints = [prefix: prefix, version: 7, encoded?: true, prefixed?: false]
+      constraints = [prefix: prefix, version: 7, encoded?: true, prefixed?: false, strict?: true]
 
       raw_uuid = "0188aadc-f449-7818-8862-5eff12733f64"
       integer_uuid = Uniq.UUID.string_to_binary!(raw_uuid)
@@ -177,7 +177,7 @@ defmodule AshUUID.UUIDTest do
 
     test "testing prefixed version 4" do
       prefix = "acct"
-      constraints = [prefix: prefix, version: 4, encoded?: true, prefixed?: true]
+      constraints = [prefix: prefix, version: 4, encoded?: true, prefixed?: true, strict?: true]
 
       raw_uuid = "8b264e66-70f3-44f4-af16-16f5535855bb"
       integer_uuid = Uniq.UUID.string_to_binary!(raw_uuid)
@@ -217,7 +217,7 @@ defmodule AshUUID.UUIDTest do
 
     test "testing prefixed version 7" do
       prefix = "acct"
-      constraints = [prefix: prefix, version: 7, encoded?: true, prefixed?: true]
+      constraints = [prefix: prefix, version: 7, encoded?: true, prefixed?: true, strict?: true]
 
       raw_uuid = "0188aadc-f449-7818-8862-5eff12733f64"
       integer_uuid = Uniq.UUID.string_to_binary!(raw_uuid)

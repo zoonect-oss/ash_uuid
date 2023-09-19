@@ -18,7 +18,8 @@ defmodule AshUUID.Macros do
       version: computed_opts.version,
       encoded?: computed_opts.encoded?,
       prefixed?: computed_opts.prefixed?,
-      migration_default?: !Keyword.get(opts, :allow_nil?, false) && computed_opts.migration_default?
+      migration_default?: !Keyword.get(opts, :allow_nil?, false) && computed_opts.migration_default?,
+      strict?: computed_opts.strict?
     ]
 
     default =
@@ -32,6 +33,7 @@ defmodule AshUUID.Macros do
       |> Keyword.delete(:encoded?)
       |> Keyword.delete(:prefixed?)
       |> Keyword.delete(:migration_default?)
+      |> Keyword.delete(:strict?)
       |> Keyword.delete(:prefix)
       |> Keyword.put_new(:primary_key?, true)
       |> Keyword.put_new(:allow_nil?, false)
@@ -44,6 +46,7 @@ defmodule AshUUID.Macros do
         |> Keyword.put(:encoded?, computed_opts.encoded?)
         |> Keyword.put(:prefixed?, computed_opts.prefixed?)
         |> Keyword.put(:migration_default?, !Keyword.get(opts, :allow_nil?, false) && computed_opts.migration_default?)
+        |> Keyword.put(:strict?, computed_opts.strict?)
       end)
 
     quote do
@@ -68,7 +71,8 @@ defmodule AshUUID.Macros do
       version: computed_opts.version,
       encoded?: computed_opts.encoded?,
       prefixed?: computed_opts.prefixed?,
-      migration_default?: !Keyword.get(opts, :allow_nil?, false) && computed_opts.migration_default?
+      migration_default?: !Keyword.get(opts, :allow_nil?, false) && computed_opts.migration_default?,
+      strict?: computed_opts.strict?
     ]
 
     default =
@@ -82,6 +86,7 @@ defmodule AshUUID.Macros do
       |> Keyword.delete(:encoded?)
       |> Keyword.delete(:prefixed?)
       |> Keyword.delete(:migration_default?)
+      |> Keyword.delete(:strict?)
       |> Keyword.delete(:prefix)
       |> Keyword.put_new(:allow_nil?, false)
       |> Keyword.put_new(:default, default)
@@ -92,6 +97,7 @@ defmodule AshUUID.Macros do
         |> Keyword.put(:encoded?, computed_opts.encoded?)
         |> Keyword.put(:prefixed?, computed_opts.prefixed?)
         |> Keyword.put(:migration_default?, !Keyword.get(opts, :allow_nil?, false) && computed_opts.migration_default?)
+        |> Keyword.put(:strict?, computed_opts.strict?)
       end)
 
     quote do

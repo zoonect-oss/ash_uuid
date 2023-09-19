@@ -22,6 +22,7 @@ defmodule AshUUID.Transformers.PostgresMigrationDefaults do
                 version: _,
                 encoded?: _,
                 prefixed?: _,
+                strict?: _,
                 migration_default?: true
               ]
             } ->
@@ -39,6 +40,7 @@ defmodule AshUUID.Transformers.PostgresMigrationDefaults do
                 version: 4,
                 encoded?: _,
                 prefixed?: _,
+                strict?: _,
                 migration_default?: true
               ]
             } ->
@@ -52,6 +54,7 @@ defmodule AshUUID.Transformers.PostgresMigrationDefaults do
                 version: 7,
                 encoded?: _,
                 prefixed?: _,
+                strict?: _,
                 migration_default?: true
               ]
             } ->

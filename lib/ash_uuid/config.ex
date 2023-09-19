@@ -4,7 +4,8 @@ defmodule AshUUID.Config do
   defstruct version: 7,
             encoded?: true,
             prefixed?: true,
-            migration_default?: false
+            migration_default?: false,
+            strict?: true
 
   def get_config(opts \\ []) do
     otp_app = Mix.Project.config()[:app]
@@ -12,7 +13,7 @@ defmodule AshUUID.Config do
     configs =
       Application.get_env(otp_app, :ash_uuid, [])
       |> Keyword.merge(opts)
-      |> Keyword.take([:version, :encoded?, :prefixed?, :migration_default?])
+      |> Keyword.take([:version, :encoded?, :prefixed?, :migration_default?, :strict?])
 
     configs
     |> Enum.each(fn {key, value} -> valid?(key, value) end)

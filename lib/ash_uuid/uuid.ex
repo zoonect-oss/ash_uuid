@@ -4,7 +4,8 @@ defmodule AshUUID.UUID do
     version: [type: :integer, doc: "Version", default: 7],
     encoded?: [type: :boolean, doc: "Encoded?", default: true],
     prefixed?: [type: :boolean, doc: "Prefixed?", default: true],
-    migration_default?: [type: :boolean, doc: "Migration default", default: false]
+    migration_default?: [type: :boolean, doc: "Migration default", default: false],
+    strict?: [type: :boolean, doc: "Strict?", default: true]
   ]
 
   @moduledoc """
@@ -24,7 +25,12 @@ defmodule AshUUID.UUID do
   def generator(constraints) do
     {:ok, term} =
       generate(constraints[:version])
-      |> process(constraints[:prefix], :raw, requested_format(constraints[:encoded?], constraints[:prefixed?]))
+      |> process(
+        constraints[:prefix],
+        constraints[:strict?],
+        :raw,
+        requested_format(constraints[:encoded?], constraints[:prefixed?])
+      )
 
     term
   end
@@ -32,31 +38,33 @@ defmodule AshUUID.UUID do
   @impl true
   def cast_input(term, constraints) do
     requested_format = requested_format(constraints[:encoded?], constraints[:prefixed?])
-    process(term, constraints[:prefix], initial_format(term), requested_format)
+    process(term, constraints[:prefix], constraints[:strict?], initial_format(term), requested_format)
   end
 
   @impl true
   def cast_stored(term, constraints) do
     requested_format = requested_format(constraints[:encoded?], constraints[:prefixed?])
-    process(term, constraints[:prefix], initial_format(term), requested_format)
+    process(term, constraints[:prefix], constraints[:strict?], initial_format(term), requested_format)
   end
 
   @impl true
   def dump_to_native(term, constraints),
-    do: process(term, constraints[:prefix], initial_format(term), :integer)
+    do: process(term, constraints[:prefix], constraints[:strict?], initial_format(term), :integer)
 
   @impl true
   def dump_to_embedded(term, constraints),
-    do: process(term, constraints[:prefix], initial_format(term), :raw)
+    do: process(term, constraints[:prefix], constraints[:strict?], initial_format(term), :raw)
 
   @impl true
   def equal?(term1, term2),
-    do: process(term1, nil, initial_format(term1), :raw) == process(term2, nil, initial_format(term2), :raw)
+    do:
+      process(term1, nil, false, initial_format(term1), :raw) == process(term2, nil, false, initial_format(term2), :raw)
 
   @impl true
   def constraints do
-    computed_opts = AshUUID.Config.get_config()
-    |> Map.put(:prefix, @constraints[:prefix][:default])
+    computed_opts =
+      AshUUID.Config.get_config()
+      |> Map.put(:prefix, @constraints[:prefix][:default])
 
     @constraints
     |> Enum.map(fn {key, opts} ->
@@ -70,15 +78,14 @@ defmodule AshUUID.UUID do
 
   ###
 
-  defp process(term, prefix, initial_format, requested_format) do
+  defp process(term, prefix, strict, initial_format, requested_format) do
     with {:ok, term} <- validate(term, initial_format),
          {:ok, term} <- restore(term, initial_format, requested_format),
-         {:ok, term} <- strip(term, prefix, initial_format, requested_format),
-         {:ok, term} <- decode(term, initial_format, requested_format),
+         {:ok, term} <- strip(term, prefix, strict, initial_format),
+         {:ok, term} <- decode(term, initial_format),
          {:ok, term} <- encode(term, requested_format),
          {:ok, term} <- prefix(term, prefix, requested_format),
-         {:ok, term} <- dump(term, initial_format, requested_format)
-    do
+         {:ok, term} <- dump(term, initial_format, requested_format) do
       {:ok, term}
     else
       err -> err
@@ -126,34 +133,35 @@ defmodule AshUUID.UUID do
 
   ###
 
-  defp strip(result, prefix, initial_format, requested_format)
+  defp strip(result, prefix, strict, initial_format)
 
-  defp strip(term, nil, :prefixed, _requested_format) do
+  defp strip(term, nil, _strict, :prefixed) do
     case String.split(term, "_") do
       [_prefix, encoded_uuid] -> {:ok, encoded_uuid}
       _ -> {:error, "got invalid prefixed term"}
     end
   end
 
-  defp strip(term, prefix, :prefixed, _requested_format) do
-    case String.split(term, "_") do
-      [^prefix, encoded_uuid] -> {:ok, encoded_uuid}
+  defp strip(term, prefix, strict, :prefixed) do
+    case {strict, String.split(term, "_")} do
+      {true, [^prefix, encoded_uuid]} -> {:ok, encoded_uuid}
+      {false, [_prefix, encoded_uuid]} -> {:ok, encoded_uuid}
       _ -> {:error, "got invalid prefixed term"}
     end
   end
 
-  defp strip(term, _prefix, _initial_format, _requested_format), do: {:ok, term}
+  defp strip(term, _prefix, _strict, _initial_format), do: {:ok, term}
 
   ###
 
-  defp decode(result, initial_format, requested_format)
+  defp decode(result, initial_format)
 
-  defp decode(nil, nil, _requested_format), do: {:ok, nil}
+  defp decode(nil, nil), do: {:ok, nil}
 
-  defp decode(term, initial_format, _requested_format) when initial_format in [:encoded, :prefixed],
+  defp decode(term, initial_format) when initial_format in [:encoded, :prefixed],
     do: AshUUID.Encoder.decode(term)
 
-  defp decode(term, _initial_format, _requested_format), do: {:ok, term}
+  defp decode(term, _initial_format), do: {:ok, term}
 
   ###
 

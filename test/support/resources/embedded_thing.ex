@@ -47,5 +47,13 @@ defmodule AshUUID.Test.EmbeddedThing do
         {:ok, input.arguments.id}
       end
     end
+
+    action :not_strict_uuid_argument_test do
+      uuid_argument :id, allow_nil?: false, strict?: false
+
+      run fn input, _context ->
+        {:ok, input.arguments.id}
+      end
+    end
   end
 end

@@ -1,6 +1,8 @@
 locals_without_parens = [
   uuid_attribute: 1,
-  uuid_attribute: 2
+  uuid_attribute: 2,
+  uuid_argument: 1,
+  uuid_argument: 2
 ]
 
 [
