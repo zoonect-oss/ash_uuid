@@ -5,6 +5,17 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.6.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.5.0...v0.6.0) (2023-09-19)
+
+
+
+
+### Features:
+
+* add strict mode option
+
+* add support for action's arguments; resolve #5; mimor bugfixes
+
 ## [v0.5.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.4.0...v0.5.0) (2023-08-20)
 
 
