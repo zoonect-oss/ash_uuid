@@ -6,7 +6,7 @@ defmodule AshUUID.Config do
             prefixed?: true,
             migration_default?: false
 
-  def get_config(opts) do
+  def get_config(opts \\ []) do
     otp_app = Mix.Project.config()[:app]
 
     configs =

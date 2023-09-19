@@ -368,5 +368,44 @@ defmodule AshUUIDTest do
       assert [%AshUUID.Test.EmbeddedThing{name: "test2"}, %AshUUID.Test.EmbeddedThing{name: "test3"}] =
                reloaded_wrapper_thing.embeds
     end
+
+    test "testing arguments" do
+      raw_uuid = "8b264e66-70f3-44f4-af16-16f5535855bb"
+      encoded_uuid = "4EZRFGoZEOuH6eJp3oyIDj"
+      prefixed_uuid = "embedded-thing_#{encoded_uuid}"
+
+      default_standard_result = AshUUID.Test.EmbeddedThing
+      |> Ash.ActionInput.for_action(:default_standard_argument_test, %{id: raw_uuid}, api: AshUUID.Test)
+      |> AshUUID.Test.run_action()
+
+      expected_uuid = "embedded_#{encoded_uuid}"
+      assert {:ok, ^expected_uuid} = default_standard_result
+
+      override_standard_result = AshUUID.Test.EmbeddedThing
+      |> Ash.ActionInput.for_action(:override_standard_argument_test, %{id: raw_uuid}, api: AshUUID.Test)
+      |> AshUUID.Test.run_action()
+
+      assert {:ok, ^encoded_uuid} = override_standard_result
+
+      default_uuid_result = AshUUID.Test.EmbeddedThing
+      |> Ash.ActionInput.for_action(:default_uuid_argument_test, %{id: raw_uuid}, api: AshUUID.Test)
+      |> AshUUID.Test.run_action()
+
+      assert {:ok, ^prefixed_uuid} = default_uuid_result
+
+      override_uuid_result = AshUUID.Test.EmbeddedThing
+      |> Ash.ActionInput.for_action(:override_uuid_argument_test, %{id: raw_uuid}, api: AshUUID.Test)
+      |> AshUUID.Test.run_action()
+
+      assert {:ok, ^encoded_uuid} = override_uuid_result
+    end
+
+    test "testing malformed inputs" do
+      result = AshUUID.Test.EmbeddedThing
+      |> Ash.ActionInput.for_action(:default_standard_argument_test, %{id: "malformed"}, api: AshUUID.Test)
+      |> AshUUID.Test.run_action()
+
+      assert {:error, %Ash.Error.Invalid{}} = result
+    end
   end
 end

@@ -54,7 +54,16 @@ defmodule AshUUID.UUID do
     do: process(term1, nil, initial_format(term1), :raw) == process(term2, nil, initial_format(term2), :raw)
 
   @impl true
-  def constraints, do: @constraints
+  def constraints do
+    computed_opts = AshUUID.Config.get_config()
+    |> Map.put(:prefix, @constraints[:prefix][:default])
+
+    @constraints
+    |> Enum.map(fn {key, opts} ->
+      default = Map.get(computed_opts, key)
+      {key, Keyword.replace(opts, :default, default)}
+    end)
+  end
 
   @impl true
   def apply_constraints(_term, _constraints), do: :ok
@@ -62,14 +71,18 @@ defmodule AshUUID.UUID do
   ###
 
   defp process(term, prefix, initial_format, requested_format) do
-    term
-    |> validate(initial_format)
-    |> restore(initial_format, requested_format)
-    |> strip(prefix, initial_format, requested_format)
-    |> decode(initial_format, requested_format)
-    |> encode(requested_format)
-    |> prefix(prefix, requested_format)
-    |> dump(initial_format, requested_format)
+    with {:ok, term} <- validate(term, initial_format),
+         {:ok, term} <- restore(term, initial_format, requested_format),
+         {:ok, term} <- strip(term, prefix, initial_format, requested_format),
+         {:ok, term} <- decode(term, initial_format, requested_format),
+         {:ok, term} <- encode(term, requested_format),
+         {:ok, term} <- prefix(term, prefix, requested_format),
+         {:ok, term} <- dump(term, initial_format, requested_format)
+    do
+      {:ok, term}
+    else
+      err -> err
+    end
   end
 
   ###
@@ -106,69 +119,69 @@ defmodule AshUUID.UUID do
 
   defp restore(result, initial_format, requested_format)
 
-  defp restore({:ok, term}, :integer, requested_format) when requested_format in [:raw, :encoded, :prefixed],
+  defp restore(term, :integer, requested_format) when requested_format in [:raw, :encoded, :prefixed],
     do: {:ok, Uniq.UUID.to_string(term)}
 
-  defp restore({:ok, term}, _initial_format, _requested_format), do: {:ok, term}
+  defp restore(term, _initial_format, _requested_format), do: {:ok, term}
 
   ###
 
   defp strip(result, prefix, initial_format, requested_format)
 
-  defp strip({:ok, term}, nil, :prefixed, _requested_format) do
+  defp strip(term, nil, :prefixed, _requested_format) do
     case String.split(term, "_") do
       [_prefix, encoded_uuid] -> {:ok, encoded_uuid}
       _ -> {:error, "got invalid prefixed term"}
     end
   end
 
-  defp strip({:ok, term}, prefix, :prefixed, _requested_format) do
+  defp strip(term, prefix, :prefixed, _requested_format) do
     case String.split(term, "_") do
       [^prefix, encoded_uuid] -> {:ok, encoded_uuid}
       _ -> {:error, "got invalid prefixed term"}
     end
   end
 
-  defp strip({:ok, term}, _prefix, _initial_format, _requested_format), do: {:ok, term}
+  defp strip(term, _prefix, _initial_format, _requested_format), do: {:ok, term}
 
   ###
 
   defp decode(result, initial_format, requested_format)
 
-  defp decode({:ok, nil}, nil, _requested_format), do: {:ok, nil}
+  defp decode(nil, nil, _requested_format), do: {:ok, nil}
 
-  defp decode({:ok, term}, initial_format, _requested_format) when initial_format in [:encoded, :prefixed],
+  defp decode(term, initial_format, _requested_format) when initial_format in [:encoded, :prefixed],
     do: AshUUID.Encoder.decode(term)
 
-  defp decode({:ok, term}, _initial_format, _requested_format), do: {:ok, term}
+  defp decode(term, _initial_format, _requested_format), do: {:ok, term}
 
   ###
 
   defp encode(result, requested_format)
 
-  defp encode({:ok, nil}, _requested_format), do: {:ok, nil}
+  defp encode(nil, _requested_format), do: {:ok, nil}
 
-  defp encode({:ok, term}, requested_format) when requested_format in [:encoded, :prefixed],
+  defp encode(term, requested_format) when requested_format in [:encoded, :prefixed],
     do: AshUUID.Encoder.encode(term)
 
-  defp encode({:ok, term}, _requested_format), do: {:ok, term}
+  defp encode(term, _requested_format), do: {:ok, term}
 
   ###
 
   defp prefix(result, prefix, requested_format)
-  defp prefix({:ok, nil}, _prefix, _requested_format), do: {:ok, nil}
-  defp prefix({:ok, term}, prefix, :prefixed), do: {:ok, "#{prefix}_#{term}"}
-  defp prefix({:ok, term}, _prefix, _requested_format), do: {:ok, term}
+  defp prefix(nil, _prefix, _requested_format), do: {:ok, nil}
+  defp prefix(term, prefix, :prefixed), do: {:ok, "#{prefix}_#{term}"}
+  defp prefix(term, _prefix, _requested_format), do: {:ok, term}
 
   ###
 
   defp dump(result, initial_format, requested_format)
 
-  defp dump({:ok, term}, initial_format, :integer) when initial_format in [:raw, :encoded, :prefixed] do
+  defp dump(term, initial_format, :integer) when initial_format in [:raw, :encoded, :prefixed] do
     {:ok, Uniq.UUID.string_to_binary!(term)}
   rescue
     _error in ArgumentError -> {:error, "can not dump term"}
   end
 
-  defp dump({:ok, term}, _initial_format, _requested_format), do: {:ok, term}
+  defp dump(term, _initial_format, _requested_format), do: {:ok, term}
 end
