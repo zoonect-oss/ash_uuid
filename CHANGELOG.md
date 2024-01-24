@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.7.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.6.0...v0.7.0) (2024-01-24)
+
+
+
+
+### Features:
+
+* better support for elixir releases through new ash_uuid otp_app name config; resolve #6; minor bugfixes; deps ugrade
+
 ## [v0.6.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.5.0...v0.6.0) (2023-09-19)
 
 
