@@ -20,7 +20,7 @@
     },
     "editor.tabSize": 2,
     "editor.trimAutoWhitespace": false,
-    "editor.wordBasedSuggestions": false,
+    "editor.wordBasedSuggestions": "off",
     "elixir-tools.credo.enable": true,
     "elixir-tools.nextls.enable": true,
     "elixirLS.dialyzerEnabled": true,

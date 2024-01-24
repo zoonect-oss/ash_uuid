@@ -8,7 +8,10 @@ defmodule AshUUID.Config do
             strict?: true
 
   def get_config(opts \\ []) do
-    otp_app = Mix.Project.config()[:app]
+    otp_app =
+      try_getting_app_name_from_config()
+      |> try_getting_app_name_from_mix_project()
+      |> try_getting_app_name_from_mix_exs()
 
     configs =
       Application.get_env(otp_app, :ash_uuid, [])
@@ -40,4 +43,30 @@ defmodule AshUUID.Config do
     do: raise("AshUUID config is not valid: can't use prefixed without encoded!")
 
   defp valid?(%__MODULE__{}), do: nil
+
+  defp try_getting_app_name_from_config do
+    Application.get_env(:ash_uuid, :otp_app, nil)
+  end
+
+  defp try_getting_app_name_from_mix_project(nil) do
+    case Code.ensure_compiled(Mix.Project) do
+      {:module, Mix.Project} -> Mix.Project.config()[:app]
+      _ -> nil
+    end
+  end
+
+  defp try_getting_app_name_from_mix_project(app_name), do: app_name
+
+  defp try_getting_app_name_from_mix_exs(nil) do
+    if File.exists?("mix.exs") do
+      mix_file = "mix.exs" |> File.read!()
+      [_, name] = Regex.run(~r/[ ]+app: :([^,]+),/, to_string(mix_file))
+
+      String.to_existing_atom(name)
+    else
+      nil
+    end
+  end
+
+  defp try_getting_app_name_from_mix_exs(app_name), do: app_name
 end

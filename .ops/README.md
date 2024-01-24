@@ -4,11 +4,23 @@
 
 Db postgres port: `59001`
 
-Setup commands:
+Setup commands (with workstation@nix):
 
     cd ash-uuid
     initdb -U postgres $DATA_POSTGRES
     overmind start -D
+    mix ash_postgres.drop
+    mix ash_postgres.generate_migrations
+    mix ash_postgres.create
+    mix ash_postgres.migrate
+    mix test
+
+Setup commands (with workstation@mise):
+
+    cd ash-uuid
+    brew bundle
+    mise install
+    mix deps.get
     mix ash_postgres.drop
     mix ash_postgres.generate_migrations
     mix ash_postgres.create

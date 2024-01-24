@@ -31,6 +31,8 @@ end
 if Mix.env() == :test do
   config :mix_test_watch, clear: true, tasks: ["test", "credo"]
 
+  config :ash_uuid, :otp_app, :ash_uuid
+
   config :ash_uuid, AshUUID.Test.Repo,
     parameters: [plan_cache_mode: "force_custom_plan"],
     pool: Ecto.Adapters.SQL.Sandbox,

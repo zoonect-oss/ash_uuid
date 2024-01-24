@@ -13,11 +13,11 @@
     overlays = [ (import rust-overlay) ];
     pkgs = import nixpkgs-unstable { inherit system overlays; };
 
-    erlangVersion = "erlang_26";
-    erlang = pkgs.beam.interpreters.${erlangVersion};
+    # erlangVersion = "erlang_26";
+    # erlang = pkgs.beam.interpreters.${erlangVersion};
 
-    elixirVersion = "elixir_1_15";
-    elixir = pkgs.beam.packages.${erlangVersion}.${elixirVersion};
+    # elixirVersion = "elixir_1_15";
+    # elixir = pkgs.beam.packages.${erlangVersion}.${elixirVersion};
 
     rustVersion = "1.70.0";
     rust = pkgs.rust-bin.stable.${rustVersion}.default;
@@ -31,8 +31,8 @@
   in rec {
     devShells.default = nixpkgs-unstable.legacyPackages.${system}.mkShell {
       buildInputs = [
-        erlang
-        elixir
+        # erlang
+        # elixir
         rust
       ]
       ++ (with pkgs; [

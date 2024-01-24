@@ -16,7 +16,7 @@ defmodule AshUUID.Test.EmbeddedThing do
   actions do
     defaults [:create, :read, :update]
 
-    action :default_standard_argument_test do
+    action :default_standard_argument_test, AshUUID.UUID do
       argument :id, AshUUID.UUID, allow_nil?: false, constraints: [prefix: "embedded"]
 
       run fn input, _context ->
@@ -24,7 +24,7 @@ defmodule AshUUID.Test.EmbeddedThing do
       end
     end
 
-    action :override_standard_argument_test do
+    action :override_standard_argument_test, AshUUID.UUID do
       argument :id, AshUUID.UUID, allow_nil?: false, constraints: [prefixed?: false]
 
       run fn input, _context ->
@@ -32,7 +32,7 @@ defmodule AshUUID.Test.EmbeddedThing do
       end
     end
 
-    action :default_uuid_argument_test do
+    action :default_uuid_argument_test, AshUUID.UUID do
       uuid_argument :id, allow_nil?: false
 
       run fn input, _context ->
@@ -40,7 +40,7 @@ defmodule AshUUID.Test.EmbeddedThing do
       end
     end
 
-    action :override_uuid_argument_test do
+    action :override_uuid_argument_test, AshUUID.UUID do
       uuid_argument :id, allow_nil?: false, prefixed?: false
 
       run fn input, _context ->
@@ -48,7 +48,7 @@ defmodule AshUUID.Test.EmbeddedThing do
       end
     end
 
-    action :not_strict_uuid_argument_test do
+    action :not_strict_uuid_argument_test, AshUUID.UUID do
       uuid_argument :id, allow_nil?: false, strict?: false
 
       run fn input, _context ->

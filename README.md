@@ -11,7 +11,7 @@
 ```elixir
 def deps do
   [
-    {:ash_uuid, "~> 0.6"},
+    {:ash_uuid, "~> 0.7"},
   ]
 end
 ```
@@ -20,7 +20,7 @@ end
 
 Adoption:
 
-- add `{:ash_uuid, "~> 0.6"}`` to your `mix.exs`` project deps;
+- add `{:ash_uuid, "~> 0.7"}`` to your `mix.exs`` project deps;
 
 - add `AshUUID.PostgresExtension`` to your app Repo's installed_extensions and set AshUUID config `migration_default?: true` if Postgres-side UUIDs generation is needed;
 
@@ -50,7 +50,10 @@ end
 ### `config/config.exs`:
 
 ```elixir
-# AshUUID: Customized defaults, not required
+# AshUUID: Your otp_app name, required!
+config :ash_uuid, :otp_app, :myapp
+
+# Myapp: Customized defaults, not required
 config :myapp, :ash_uuid,
   version: 7, # default
   encoded?: true, # default

@@ -11,7 +11,6 @@ defmodule AshUUID.Test do
     resource AshUUID.Test.Blib
     resource AshUUID.Test.BlibBlob
     resource AshUUID.Test.Blob
-    resource AshUUID.Test.EmbeddedThing
     resource AshUUID.Test.Lime
     resource AshUUID.Test.LimeSmoothie
     resource AshUUID.Test.Mango

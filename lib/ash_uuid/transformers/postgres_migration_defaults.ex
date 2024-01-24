@@ -22,8 +22,8 @@ defmodule AshUUID.Transformers.PostgresMigrationDefaults do
                 version: _,
                 encoded?: _,
                 prefixed?: _,
-                strict?: _,
-                migration_default?: true
+                migration_default?: true,
+                strict?: _
               ]
             } ->
               true
@@ -40,8 +40,8 @@ defmodule AshUUID.Transformers.PostgresMigrationDefaults do
                 version: 4,
                 encoded?: _,
                 prefixed?: _,
-                strict?: _,
-                migration_default?: true
+                migration_default?: true,
+                strict?: _
               ]
             } ->
               {name, "fragment(\"uuid_generate_v4()\")"}
@@ -54,8 +54,8 @@ defmodule AshUUID.Transformers.PostgresMigrationDefaults do
                 version: 7,
                 encoded?: _,
                 prefixed?: _,
-                strict?: _,
-                migration_default?: true
+                migration_default?: true,
+                strict?: _
               ]
             } ->
               {name, "fragment(\"uuid_generate_v7()\")"}

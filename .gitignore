@@ -20,6 +20,9 @@
 /.ops/.overmind.sock
 .overmind.sock
 
+# Brew bundle
+/Brewfile.lock.json
+
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
 /priv/cover
