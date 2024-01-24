@@ -47,7 +47,7 @@ defmodule AshUUID.MixProject do
       {:ash_postgres, ">= 1.3.41"},
       # Testing, documentation, and release tools
       {:mix_test_interactive, ">= 0.0.0", only: :test, runtime: false},
-      {:mix_test_watch, ">= 0.0.0", only: :test, runtime: false},
+      # {:mix_test_watch, ">= 0.0.0", only: :test, runtime: false},
       {:mix_audit, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:dialyxir, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
