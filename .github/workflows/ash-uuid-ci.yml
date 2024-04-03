@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-deps-get@main
+      - uses: zoonect-oss/github-ops/actions/mix-deps-get@main
         with:
           erlang-version: 26.2
           elixir-version: 1.16
@@ -34,7 +34,7 @@ jobs:
     needs: deps
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-compile@main
+      - uses: zoonect-oss/github-ops/actions/mix-compile@main
         with:
           erlang-version: 26.2
           elixir-version: 1.16
@@ -46,7 +46,7 @@ jobs:
     needs: deps
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-compile@main
+      - uses: zoonect-oss/github-ops/actions/mix-compile@main
         with:
           erlang-version: 26.2
           elixir-version: 1.16
@@ -58,7 +58,7 @@ jobs:
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-task@main
+      - uses: zoonect-oss/github-ops/actions/mix-task@main
         with:
           erlang-version: 26.2
           elixir-version: 1.16
@@ -71,7 +71,7 @@ jobs:
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-task@main
+      - uses: zoonect-oss/github-ops/actions/mix-task@main
         with:
           erlang-version: 26.2
           elixir-version: 1.16
@@ -84,7 +84,7 @@ jobs:
     needs: deps
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-hex-audit@main
+      - uses: zoonect-oss/github-ops/actions/mix-hex-audit@main
         with:
           erlang-version: 26.2
           elixir-version: 1.16
@@ -95,7 +95,7 @@ jobs:
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-format@main
+      - uses: zoonect-oss/github-ops/actions/mix-format@main
         with:
           erlang-version: 26.2
           elixir-version: 1.16
@@ -117,7 +117,7 @@ jobs:
     needs: build-dev
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-dialyzer@main
+      - uses: zoonect-oss/github-ops/actions/mix-dialyzer@main
         with:
           erlang-version: 26.2
           elixir-version: 1.16
@@ -129,7 +129,7 @@ jobs:
     needs: build-dev
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-credo@main
+      - uses: zoonect-oss/github-ops/actions/mix-credo@main
         if: ${{inputs.spark-formatter}}
         with:
           erlang-version: 26.2
@@ -142,7 +142,7 @@ jobs:
     needs: build-dev
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-task@main
+      - uses: zoonect-oss/github-ops/actions/mix-task@main
         if: ${{inputs.sobelow}}
         with:
           erlang-version: 26.2
@@ -168,14 +168,14 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v3
-      - uses: zoonect/github-ops/actions/mix-task@main
+      - uses: zoonect-oss/github-ops/actions/mix-task@main
         if: ${{inputs.postgres}}
         with:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: test
           task: ash_postgres.generate_migrations --check
-      - uses: zoonect/github-ops/actions/mix-task@main
+      - uses: zoonect-oss/github-ops/actions/mix-task@main
         if: ${{inputs.postgres}}
         with:
           erlang-version: 26.2
@@ -184,7 +184,7 @@ jobs:
           task: ash_postgres.create
         env:
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
-      - uses: zoonect/github-ops/actions/mix-task@main
+      - uses: zoonect-oss/github-ops/actions/mix-task@main
         if: ${{inputs.postgres}}
         with:
           erlang-version: 26.2
@@ -193,7 +193,7 @@ jobs:
           task: ash_postgres.migrate
         env:
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
-      - uses: zoonect/github-ops/actions/mix-test@main
+      - uses: zoonect-oss/github-ops/actions/mix-test@main
         with:
           erlang-version: 26.2
           elixir-version: 1.16
