@@ -10,16 +10,6 @@
 # The directory NextLS language server will write compiled artifacts to.
 /.elixir-tools/
 
-# Nix flake directory
-/.nix/
-
-# Nix data directory
-/.data/
-
-# Ops overmind sock
-/.ops/.overmind.sock
-.overmind.sock
-
 # Brew bundle
 /Brewfile.lock.json
 

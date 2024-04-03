@@ -4,4 +4,4 @@ DATABASE_URL = "postgres://postgres:postgres@127.0.0.1:51015/ash_uuid_test"
 
 [tools]
 erlang = "26.2.2"
-elixir = "1.16.1-otp-26"
+elixir = "1.16.2-otp-26"

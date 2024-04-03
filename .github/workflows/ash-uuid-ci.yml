@@ -114,6 +114,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: zoonect-oss/github-ops/actions/mix-docs@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: dev
           compile-assets: false
 
@@ -184,7 +186,7 @@ jobs:
           elixir-version: 1.16
           mix-env: test
           compile-assets: false
-          task: ash_postgres.generate_migrations --check
+          task: ash_postgres.generate_migrations
       - uses: zoonect-oss/github-ops/actions/mix-task@main
         if: ${{inputs.postgres}}
         with:
@@ -234,6 +236,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: zoonect-oss/github-ops/actions/mix-hex-publish@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: dev
           compile-assets: false
           hex-api-key: ${{secrets.HEX_API_KEY}}
