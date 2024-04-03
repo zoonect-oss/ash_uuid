@@ -39,6 +39,7 @@ jobs:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: test
+          compile-assets: false
 
   build-dev:
     name: MIX_ENV=dev mix.compile
@@ -51,6 +52,7 @@ jobs:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: dev
+          compile-assets: false
 
   outdated:
     name: mix hex.outdated
@@ -64,6 +66,7 @@ jobs:
           elixir-version: 1.16
           mix-env: test
           task: hex.outdated
+          compile-assets: false
 
   unused:
     name: mix deps.unlock --check-unused
@@ -77,6 +80,7 @@ jobs:
           elixir-version: 1.16
           mix-env: test
           task: deps.unlock --check-unused
+          compile-assets: false
 
   audit:
     name: mix hex.audit
@@ -100,6 +104,7 @@ jobs:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: test
+          compile-assets: false
 
   docs:
     name: mix docs
@@ -107,9 +112,10 @@ jobs:
     needs: build-dev
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-docs@main
+      - uses: zoonect-oss/github-ops/actions/mix-docs@main
         with:
           mix-env: dev
+          compile-assets: false
 
   dialyzer:
     name: mix dialyzer
@@ -122,6 +128,7 @@ jobs:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: dev
+          compile-assets: false
 
   credo:
     name: mix credo --strict
@@ -135,6 +142,7 @@ jobs:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: dev
+          compile-assets: false
 
   sobelow:
     name: mix sobelow
@@ -149,6 +157,7 @@ jobs:
           elixir-version: 1.16
           mix-env: dev
           task: sobelow
+          compile-assets: false
 
   test:
     name: mix test
@@ -174,6 +183,7 @@ jobs:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: test
+          compile-assets: false
           task: ash_postgres.generate_migrations --check
       - uses: zoonect-oss/github-ops/actions/mix-task@main
         if: ${{inputs.postgres}}
@@ -181,6 +191,7 @@ jobs:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: test
+          compile-assets: false
           task: ash_postgres.create
         env:
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
@@ -190,6 +201,7 @@ jobs:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: test
+          compile-assets: false
           task: ash_postgres.migrate
         env:
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
@@ -198,6 +210,7 @@ jobs:
           erlang-version: 26.2
           elixir-version: 1.16
           mix-env: test
+          compile-assets: false
         env:
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
 
@@ -219,7 +232,8 @@ jobs:
     name: Release
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-hex-publish@main
+      - uses: zoonect-oss/github-ops/actions/mix-hex-publish@main
         with:
           mix-env: dev
+          compile-assets: false
           hex-api-key: ${{secrets.HEX_API_KEY}}
