@@ -1,7 +1,7 @@
 defmodule AshUUID.Test do
   @moduledoc false
 
-  use Ash.Api
+  use Ash.Domain
 
   resources do
     resource AshUUID.Test.Avocado

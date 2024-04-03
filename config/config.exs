@@ -1,7 +1,5 @@
 import Config
 
-config :ash, :use_all_identities_in_manage_relationship?, false
-
 config :spark, :formatter,
   remove_parens?: true,
   "Ash.Resource": [
@@ -29,8 +27,6 @@ if Mix.env() == :dev do
 end
 
 if Mix.env() == :test do
-  config :mix_test_watch, clear: true, tasks: ["test", "credo"]
-
   config :ash_uuid, :otp_app, :ash_uuid
 
   config :ash_uuid, AshUUID.Test.Repo,
@@ -46,7 +42,7 @@ if Mix.env() == :test do
 
   config :ash_uuid,
     ecto_repos: [AshUUID.Test.Repo],
-    ash_apis: [AshUUID.Test]
+    ash_domains: [AshUUID.Test]
 
   # Ash: type shorthands
   # config :ash, :custom_types,

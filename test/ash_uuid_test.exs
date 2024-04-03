@@ -15,7 +15,7 @@ defmodule AshUUIDTest do
       avocado_smoothie =
         AshUUID.Test.AvocadoSmoothie
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.AvocadoSmoothie{} = avocado_smoothie
       assert :raw = AshUUID.identify_format(avocado_smoothie.id)
@@ -24,7 +24,7 @@ defmodule AshUUIDTest do
       avocado =
         AshUUID.Test.Avocado
         |> Ash.Changeset.for_create(:create, %{avocado_smoothie_id: avocado_smoothie.id})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Avocado{} = avocado
       assert :raw = AshUUID.identify_format(avocado.id)
@@ -32,7 +32,7 @@ defmodule AshUUIDTest do
       assert :raw = AshUUID.identify_format(avocado.avocado_smoothie_id)
       assert {:ok, %{version: 4}} = Uniq.UUID.info(avocado.avocado_smoothie_id)
 
-      avocado_smoothie = AshUUID.Test.load!(avocado_smoothie, :avocados)
+      avocado_smoothie = Ash.load!(avocado_smoothie, :avocados)
       avocado_id = avocado.id
 
       assert [%AshUUID.Test.Avocado{id: ^avocado_id} = loaded_avocado] = avocado_smoothie.avocados
@@ -45,7 +45,7 @@ defmodule AshUUIDTest do
       banana_smoothie =
         AshUUID.Test.BananaSmoothie
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.BananaSmoothie{} = banana_smoothie
       assert :raw = AshUUID.identify_format(banana_smoothie.id)
@@ -54,7 +54,7 @@ defmodule AshUUIDTest do
       banana =
         AshUUID.Test.Banana
         |> Ash.Changeset.for_create(:create, %{banana_smoothie_id: banana_smoothie.id})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Banana{} = banana
       assert :raw = AshUUID.identify_format(banana.id)
@@ -62,7 +62,7 @@ defmodule AshUUIDTest do
       assert :raw = AshUUID.identify_format(banana.banana_smoothie_id)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(banana.banana_smoothie_id)
 
-      banana_smoothie = AshUUID.Test.load!(banana_smoothie, :bananas)
+      banana_smoothie = Ash.load!(banana_smoothie, :bananas)
       banana_id = banana.id
 
       assert [%AshUUID.Test.Banana{id: ^banana_id} = loaded_banana] = banana_smoothie.bananas
@@ -75,7 +75,7 @@ defmodule AshUUIDTest do
       lime_smoothie =
         AshUUID.Test.LimeSmoothie
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.LimeSmoothie{} = lime_smoothie
       assert :encoded = AshUUID.identify_format(lime_smoothie.id)
@@ -85,7 +85,7 @@ defmodule AshUUIDTest do
       lime =
         AshUUID.Test.Lime
         |> Ash.Changeset.for_create(:create, %{lime_smoothie_id: lime_smoothie.id})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Lime{} = lime
       assert :encoded = AshUUID.identify_format(lime.id)
@@ -95,7 +95,7 @@ defmodule AshUUIDTest do
       assert {:ok, string_uuid} = AshUUID.Encoder.decode(lime.lime_smoothie_id)
       assert {:ok, %{version: 4}} = Uniq.UUID.info(string_uuid)
 
-      lime_smoothie = AshUUID.Test.load!(lime_smoothie, :limes)
+      lime_smoothie = Ash.load!(lime_smoothie, :limes)
       lime_id = lime.id
 
       assert [%AshUUID.Test.Lime{id: ^lime_id} = loaded_lime] = lime_smoothie.limes
@@ -108,7 +108,7 @@ defmodule AshUUIDTest do
       mango_smoothie =
         AshUUID.Test.MangoSmoothie
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.MangoSmoothie{} = mango_smoothie
       assert :encoded = AshUUID.identify_format(mango_smoothie.id)
@@ -118,7 +118,7 @@ defmodule AshUUIDTest do
       mango =
         AshUUID.Test.Mango
         |> Ash.Changeset.for_create(:create, %{mango_smoothie_id: mango_smoothie.id})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Mango{} = mango
       assert :encoded = AshUUID.identify_format(mango.id)
@@ -128,7 +128,7 @@ defmodule AshUUIDTest do
       assert {:ok, string_uuid} = AshUUID.Encoder.decode(mango.mango_smoothie_id)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
 
-      mango_smoothie = AshUUID.Test.load!(mango_smoothie, :mangos)
+      mango_smoothie = Ash.load!(mango_smoothie, :mangos)
       mango_id = mango.id
 
       assert [%AshUUID.Test.Mango{id: ^mango_id} = loaded_mango] = mango_smoothie.mangos
@@ -141,7 +141,7 @@ defmodule AshUUIDTest do
       orange_smoothie =
         AshUUID.Test.OrangeSmoothie
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.OrangeSmoothie{} = orange_smoothie
       assert :prefixed = AshUUID.identify_format(orange_smoothie.id)
@@ -152,7 +152,7 @@ defmodule AshUUIDTest do
       orange =
         AshUUID.Test.Orange
         |> Ash.Changeset.for_create(:create, %{orange_smoothie_id: orange_smoothie.id})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Orange{} = orange
       assert :prefixed = AshUUID.identify_format(orange.id)
@@ -164,7 +164,7 @@ defmodule AshUUIDTest do
       assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
       assert {:ok, %{version: 4}} = Uniq.UUID.info(string_uuid)
 
-      orange_smoothie = AshUUID.Test.load!(orange_smoothie, :oranges)
+      orange_smoothie = Ash.load!(orange_smoothie, :oranges)
       orange_id = orange.id
 
       assert [%AshUUID.Test.Orange{id: ^orange_id} = loaded_orange] = orange_smoothie.oranges
@@ -177,7 +177,7 @@ defmodule AshUUIDTest do
       pineapple_smoothie =
         AshUUID.Test.PineappleSmoothie
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.PineappleSmoothie{} = pineapple_smoothie
       assert :prefixed = AshUUID.identify_format(pineapple_smoothie.id)
@@ -188,7 +188,7 @@ defmodule AshUUIDTest do
       pineapple =
         AshUUID.Test.Pineapple
         |> Ash.Changeset.for_create(:create, %{pineapple_smoothie_id: pineapple_smoothie.id})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Pineapple{} = pineapple
       assert :prefixed = AshUUID.identify_format(pineapple.id)
@@ -207,7 +207,7 @@ defmodule AshUUIDTest do
       assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
 
-      pineapple_smoothie = AshUUID.Test.load!(pineapple_smoothie, :pineapples)
+      pineapple_smoothie = Ash.load!(pineapple_smoothie, :pineapples)
       pineapple_id = pineapple.id
 
       assert [%AshUUID.Test.Pineapple{id: ^pineapple_id} = loaded_pineapple] = pineapple_smoothie.pineapples
@@ -221,7 +221,7 @@ defmodule AshUUIDTest do
       blib =
         AshUUID.Test.Blib
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Blib{} = blib
       assert :encoded = AshUUID.identify_format(blib.id)
@@ -231,7 +231,7 @@ defmodule AshUUIDTest do
       blob =
         AshUUID.Test.Blob
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Blob{} = blob
       assert :encoded = AshUUID.identify_format(blob.id)
@@ -241,7 +241,7 @@ defmodule AshUUIDTest do
       blib_blob =
         AshUUID.Test.BlibBlob
         |> Ash.Changeset.for_create(:create, %{blib_id: blib.id, blob_id: blob.id})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.BlibBlob{} = blib_blob
 
@@ -272,7 +272,7 @@ defmodule AshUUIDTest do
       source_template =
         AshUUID.Test.Template
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Template{} = source_template
       assert :prefixed = AshUUID.identify_format(source_template.id)
@@ -283,7 +283,7 @@ defmodule AshUUIDTest do
       derived_template =
         AshUUID.Test.Template
         |> Ash.Changeset.for_create(:create, %{from_template_id: source_template.id})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.Template{} = derived_template
       assert :prefixed = AshUUID.identify_format(derived_template.id)
@@ -296,7 +296,7 @@ defmodule AshUUIDTest do
       assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
 
-      template_with_source = AshUUID.Test.load!(derived_template, :from_template)
+      template_with_source = Ash.load!(derived_template, :from_template)
       source_template_id = source_template.id
 
       assert %AshUUID.Test.Template{id: ^source_template_id} =
@@ -306,7 +306,7 @@ defmodule AshUUIDTest do
 
       assert source_template.id == derived_template.from_template_id
 
-      template_with_derivations = AshUUID.Test.load!(source_template, :derived_templates)
+      template_with_derivations = Ash.load!(source_template, :derived_templates)
       derived_template_id = derived_template.id
 
       assert [%AshUUID.Test.Template{id: ^derived_template_id} = loaded_derived_template] =
@@ -319,7 +319,7 @@ defmodule AshUUIDTest do
       volatile_thing =
         AshUUID.Test.VolatileThing
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.VolatileThing{} = volatile_thing
       assert :prefixed = AshUUID.identify_format(volatile_thing.id)
@@ -332,7 +332,7 @@ defmodule AshUUIDTest do
       embedded_thing =
         AshUUID.Test.EmbeddedThing
         |> Ash.Changeset.for_create(:create, %{})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.EmbeddedThing{} = embedded_thing
       assert :prefixed = AshUUID.identify_format(embedded_thing.id)
@@ -345,7 +345,7 @@ defmodule AshUUIDTest do
       wrapper_thing =
         AshUUID.Test.WrapperThing
         |> Ash.Changeset.for_create(:create, %{embed: %{name: "test1"}, embeds: [%{name: "test2"}, %{name: "test3"}]})
-        |> AshUUID.Test.create!()
+        |> Ash.create!()
 
       assert %AshUUID.Test.WrapperThing{} = wrapper_thing
       assert :prefixed = AshUUID.identify_format(wrapper_thing.id)
@@ -359,7 +359,7 @@ defmodule AshUUIDTest do
       assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
       assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
 
-      reloaded_wrapper_thing = AshUUID.Test.reload!(wrapper_thing)
+      reloaded_wrapper_thing = Ash.reload!(wrapper_thing)
       wrapper_thing_id = wrapper_thing.id
 
       assert %AshUUID.Test.WrapperThing{id: ^wrapper_thing_id} = reloaded_wrapper_thing
@@ -377,7 +377,7 @@ defmodule AshUUIDTest do
       default_standard_result =
         AshUUID.Test.EmbeddedThing
         |> Ash.ActionInput.for_action(:default_standard_argument_test, %{id: raw_uuid}, api: AshUUID.Test)
-        |> AshUUID.Test.run_action()
+        |> Ash.run_action()
 
       expected_uuid = "embedded_#{encoded_uuid}"
       assert {:ok, ^expected_uuid} = default_standard_result
@@ -385,21 +385,21 @@ defmodule AshUUIDTest do
       override_standard_result =
         AshUUID.Test.EmbeddedThing
         |> Ash.ActionInput.for_action(:override_standard_argument_test, %{id: raw_uuid}, api: AshUUID.Test)
-        |> AshUUID.Test.run_action()
+        |> Ash.run_action()
 
       assert {:ok, ^encoded_uuid} = override_standard_result
 
       default_uuid_result =
         AshUUID.Test.EmbeddedThing
         |> Ash.ActionInput.for_action(:default_uuid_argument_test, %{id: raw_uuid}, api: AshUUID.Test)
-        |> AshUUID.Test.run_action()
+        |> Ash.run_action()
 
       assert {:ok, ^prefixed_uuid} = default_uuid_result
 
       override_uuid_result =
         AshUUID.Test.EmbeddedThing
         |> Ash.ActionInput.for_action(:override_uuid_argument_test, %{id: raw_uuid}, api: AshUUID.Test)
-        |> AshUUID.Test.run_action()
+        |> Ash.run_action()
 
       assert {:ok, ^encoded_uuid} = override_uuid_result
     end
@@ -408,7 +408,7 @@ defmodule AshUUIDTest do
       result =
         AshUUID.Test.EmbeddedThing
         |> Ash.ActionInput.for_action(:default_standard_argument_test, %{id: "malformed"}, api: AshUUID.Test)
-        |> AshUUID.Test.run_action()
+        |> Ash.run_action()
 
       assert {:error, %Ash.Error.Invalid{}} = result
     end
@@ -421,7 +421,7 @@ defmodule AshUUIDTest do
         |> Ash.ActionInput.for_action(:default_uuid_argument_test, %{id: "wrong-prefix_#{encoded_uuid}"},
           api: AshUUID.Test
         )
-        |> AshUUID.Test.run_action()
+        |> Ash.run_action()
 
       assert {:error, %Ash.Error.Invalid{}} = result
 
@@ -430,7 +430,7 @@ defmodule AshUUIDTest do
         |> Ash.ActionInput.for_action(:not_strict_uuid_argument_test, %{id: "wrong-prefix_#{encoded_uuid}"},
           api: AshUUID.Test
         )
-        |> AshUUID.Test.run_action()
+        |> Ash.run_action()
 
       expected = "embedded-thing_#{encoded_uuid}"
       assert {:ok, ^expected} = result

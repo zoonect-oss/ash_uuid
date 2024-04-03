@@ -1,20 +1,20 @@
 defmodule AshUUID.Test.EmbeddedThing do
   @moduledoc false
 
-  use Ash.Resource, data_layer: :embedded, extensions: [AshUUID]
+  use Ash.Resource, domain: AshUUID.Test, data_layer: :embedded, extensions: [AshUUID]
 
   code_interface do
-    define_for AshUUID.Test
   end
 
   attributes do
     uuid_attribute :id
 
-    attribute :name, :string
+    attribute :name, :string, public?: true
   end
 
   actions do
-    defaults [:create, :read, :update]
+    defaults [:read, create: :*, update: :*]
+    default_accept :*
 
     action :default_standard_argument_test, AshUUID.UUID do
       argument :id, AshUUID.UUID, allow_nil?: false, constraints: [prefix: "embedded"]

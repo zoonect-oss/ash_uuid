@@ -1,10 +1,9 @@
 defmodule AshUUID.Test.WrapperThing do
   @moduledoc false
 
-  use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
+  use Ash.Resource, domain: AshUUID.Test, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
 
   code_interface do
-    define_for AshUUID.Test
   end
 
   postgres do
@@ -15,12 +14,13 @@ defmodule AshUUID.Test.WrapperThing do
   attributes do
     uuid_attribute :id
 
-    attribute :embed, AshUUID.Test.EmbeddedThing
+    attribute :embed, AshUUID.Test.EmbeddedThing, public?: true
 
-    attribute :embeds, {:array, AshUUID.Test.EmbeddedThing}
+    attribute :embeds, {:array, AshUUID.Test.EmbeddedThing}, public?: true
   end
 
   actions do
-    defaults [:create, :read, :update]
+    defaults [:read, create: :*, update: :*]
+    default_accept :*
   end
 end

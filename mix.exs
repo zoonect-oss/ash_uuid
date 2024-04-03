@@ -10,7 +10,7 @@ defmodule AshUUID.MixProject do
     [
       app: @name,
       version: @version,
-      elixir: "~> 1.10",
+      elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       preferred_cli_env: preferred_cli_env(),
@@ -43,11 +43,10 @@ defmodule AshUUID.MixProject do
   defp deps do
     [
       {:uniq, "~> 0.6"},
-      {:ash, "~> 2.13"},
-      {:ash_postgres, ">= 1.3.41"},
+      {:ash, "~> 3.0.0-rc.0"},
+      {:ash_postgres, "~> 2.0.0-rc.0"},
       # Testing, documentation, and release tools
       {:mix_test_interactive, ">= 0.0.0", only: :test, runtime: false},
-      # {:mix_test_watch, ">= 0.0.0", only: :test, runtime: false},
       {:mix_audit, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:dialyxir, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},

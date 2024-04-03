@@ -1,10 +1,9 @@
 defmodule AshUUID.Test.VolatileThing do
   @moduledoc false
 
-  use Ash.Resource, extensions: [AshUUID]
+  use Ash.Resource, domain: AshUUID.Test, extensions: [AshUUID]
 
   code_interface do
-    define_for AshUUID.Test
   end
 
   attributes do
@@ -12,6 +11,7 @@ defmodule AshUUID.Test.VolatileThing do
   end
 
   actions do
-    defaults [:create]
+    defaults [:read, create: :*, update: :*]
+    default_accept :*
   end
 end

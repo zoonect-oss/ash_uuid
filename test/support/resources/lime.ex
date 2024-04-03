@@ -1,10 +1,9 @@
 defmodule AshUUID.Test.Lime do
   @moduledoc false
 
-  use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
+  use Ash.Resource, domain: AshUUID.Test, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
 
   code_interface do
-    define_for AshUUID.Test
   end
 
   postgres do
@@ -19,10 +18,11 @@ defmodule AshUUID.Test.Lime do
   end
 
   relationships do
-    belongs_to :lime_smoothie, AshUUID.Test.LimeSmoothie, attribute_writable?: true
+    belongs_to :lime_smoothie, AshUUID.Test.LimeSmoothie, attribute_public?: true
   end
 
   actions do
-    defaults [:create, :read, :update]
+    defaults [:read, create: :*, update: :*]
+    default_accept :*
   end
 end

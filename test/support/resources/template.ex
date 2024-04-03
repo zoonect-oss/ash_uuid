@@ -1,10 +1,9 @@
 defmodule AshUUID.Test.Template do
   @moduledoc false
 
-  use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
+  use Ash.Resource, domain: AshUUID.Test, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
 
   code_interface do
-    define_for AshUUID.Test
   end
 
   postgres do
@@ -17,12 +16,13 @@ defmodule AshUUID.Test.Template do
   end
 
   relationships do
-    belongs_to :from_template, AshUUID.Test.Template, allow_nil?: true, attribute_writable?: true
+    belongs_to :from_template, AshUUID.Test.Template, allow_nil?: true, attribute_public?: true
 
     has_many :derived_templates, AshUUID.Test.Template, destination_attribute: :from_template_id
   end
 
   actions do
-    defaults [:create, :read, :update]
+    defaults [:read, create: :*, update: :*]
+    default_accept :*
   end
 end

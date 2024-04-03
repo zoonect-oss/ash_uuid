@@ -37,7 +37,7 @@ defmodule AshUUID.Transformers.BelongsToAttribute do
             relationship.allow_nil?
           end,
         writable?: relationship.attribute_writable?,
-        private?: !relationship.attribute_writable?,
+        public?: relationship.attribute_public?,
         primary_key?: relationship.primary_key?
       ]
 
@@ -45,6 +45,7 @@ defmodule AshUUID.Transformers.BelongsToAttribute do
         !Keyword.get(attribute_opts, :allow_nil?, false) && destination_attribute.constraints[:migration_default?]
 
       attribute_constraints = Keyword.put(destination_attribute.constraints, :migration_default?, migration_default?)
+
       attribute_opts = Keyword.put(attribute_opts, :constraints, attribute_constraints)
 
       entity = Transformer.build_entity(@extension, [:attributes], :attribute, attribute_opts)
