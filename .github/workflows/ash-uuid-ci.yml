@@ -16,72 +16,91 @@ on:
         default: true
       hex-api-key:
         type: string
+
 jobs:
   deps:
     name: mix deps.get
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-deps-get@main
+      - uses: zoonect/github-ops/actions/mix-deps-get@main
+        with:
+          erlang-version: 26.2
+          elixir-version: 1.16
+
   build-test:
     name: MIX_ENV=test mix.compile
     runs-on: ubuntu-latest
     needs: deps
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/install-elixir@main
-      - uses: team-alembic/staple-actions/actions/mix-compile@main
+      - uses: zoonect/github-ops/actions/mix-compile@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: test
+
   build-dev:
     name: MIX_ENV=dev mix.compile
     runs-on: ubuntu-latest
     needs: deps
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-compile@main
+      - uses: zoonect/github-ops/actions/mix-compile@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: dev
+
   outdated:
     name: mix hex.outdated
     runs-on: ubuntu-latest
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-task@main
+      - uses: zoonect/github-ops/actions/mix-task@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: test
           task: hex.outdated
+
   unused:
     name: mix deps.unlock --check-unused
     runs-on: ubuntu-latest
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-task@main
+      - uses: zoonect/github-ops/actions/mix-task@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: test
           task: deps.unlock --check-unused
+
   audit:
     name: mix hex.audit
     runs-on: ubuntu-latest
     needs: deps
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-hex-audit@main
-      - uses: team-alembic/staple-actions/actions/mix-task@main
+      - uses: zoonect/github-ops/actions/mix-hex-audit@main
         with:
-          mix-env: test
-          task: deps.audit
+          erlang-version: 26.2
+          elixir-version: 1.16
+
   format:
     name: mix format --check-formatted
     runs-on: ubuntu-latest
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-format@main
+      - uses: zoonect/github-ops/actions/mix-format@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: test
+
   docs:
     name: mix docs
     runs-on: ubuntu-latest
@@ -91,45 +110,46 @@ jobs:
       - uses: team-alembic/staple-actions/actions/mix-docs@main
         with:
           mix-env: dev
+
   dialyzer:
     name: mix dialyzer
     runs-on: ubuntu-latest
     needs: build-dev
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-dialyzer@main
+      - uses: zoonect/github-ops/actions/mix-dialyzer@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: dev
+
   credo:
     name: mix credo --strict
     runs-on: ubuntu-latest
     needs: build-dev
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-credo@main
+      - uses: zoonect/github-ops/actions/mix-credo@main
         if: ${{inputs.spark-formatter}}
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: dev
+
   sobelow:
     name: mix sobelow
     runs-on: ubuntu-latest
     needs: build-dev
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-task@main
+      - uses: zoonect/github-ops/actions/mix-task@main
         if: ${{inputs.sobelow}}
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: dev
           task: sobelow
-  # doctor:
-  #   name: mix doctor --full --raise
-  #   runs-on: ubuntu-latest
-  #   needs: build-dev
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: team-alembic/staple-actions/actions/mix-doctor@main
-  #       with:
-  #         mix-env: dev
+
   test:
     name: mix test
     runs-on: ubuntu-latest
@@ -148,31 +168,39 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v3
-      - uses: team-alembic/staple-actions/actions/mix-task@main
-        with:
-          mix-env: test
-          task: ash_postgres.generate_migrations
+      - uses: zoonect/github-ops/actions/mix-task@main
         if: ${{inputs.postgres}}
-      - uses: team-alembic/staple-actions/actions/mix-task@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
+          mix-env: test
+          task: ash_postgres.generate_migrations --check
+      - uses: zoonect/github-ops/actions/mix-task@main
+        if: ${{inputs.postgres}}
+        with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: test
           task: ash_postgres.create
         env:
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
+      - uses: zoonect/github-ops/actions/mix-task@main
         if: ${{inputs.postgres}}
-      - uses: team-alembic/staple-actions/actions/mix-task@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: test
           task: ash_postgres.migrate
         env:
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
-        if: ${{inputs.postgres}}
-      - uses: team-alembic/staple-actions/actions/mix-task@main
+      - uses: zoonect/github-ops/actions/mix-test@main
         with:
+          erlang-version: 26.2
+          elixir-version: 1.16
           mix-env: test
-          task: test
         env:
           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/ash_uuid_test"
+
   release:
     needs:
       - deps
@@ -184,7 +212,6 @@ jobs:
       - docs
       - dialyzer
       - credo
-      # - doctor
       - sobelow
       - test
     if: startsWith(github.ref, 'refs/tags/v')
