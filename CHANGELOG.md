@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.8.0-rc.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.7.0...v0.8.0-rc.0) (2024-04-03)
+
+
+
+
+### Features:
+
+* Ash v3.0 RC support
+
 ## [v0.7.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.6.0...v0.7.0) (2024-01-24)
 
 
