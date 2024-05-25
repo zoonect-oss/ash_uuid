@@ -4,7 +4,7 @@ defmodule AshUUID.PostgresExtension do
   use AshPostgres.CustomExtension, name: "ash-uuid", latest_version: 1
 
   @impl true
-  def install(1) do
+  def install(0) do
     """
     execute(\"\"\"
     CREATE OR REPLACE FUNCTION uuid_generate_v7()
