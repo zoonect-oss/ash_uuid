@@ -3,9 +3,6 @@ defmodule AshUUID.Test.Mango do
 
   use Ash.Resource, domain: AshUUID.Test, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
 
-  code_interface do
-  end
-
   postgres do
     table "mangos"
     repo AshUUID.Test.Repo

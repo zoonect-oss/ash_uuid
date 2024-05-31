@@ -3,9 +3,6 @@ defmodule AshUUID.Test.Blob do
 
   use Ash.Resource, domain: AshUUID.Test, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
 
-  code_interface do
-  end
-
   postgres do
     table "blobs"
     repo AshUUID.Test.Repo

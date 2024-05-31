@@ -5,24 +5,18 @@
     }
   ],
   "settings": {
-    "[elixir]": { "editor.defaultFormatter": "elixir-tools.elixir-tools" },
-    "[phoenix-heex]": {
-      "editor.defaultFormatter": "animus-coop.vscode-elixir-mix-formatter"
-    },
+    "[elixir]": { "editor.defaultFormatter": "JakeBecker.elixir-ls" },
     "editor.acceptSuggestionOnEnter": "off",
     "editor.bracketPairColorization.enabled": true,
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
     "editor.guides.bracketPairs": "active",
     "editor.insertSpaces": true,
-    "editor.quickSuggestions": {
-      "strings": true
-    },
+    "editor.quickSuggestions": { "strings": true },
     "editor.tabSize": 2,
     "editor.trimAutoWhitespace": false,
     "editor.wordBasedSuggestions": "off",
     "elixir-tools.credo.enable": true,
-    "elixir-tools.nextls.enable": true,
     "elixirLS.dialyzerEnabled": true,
     "elixirLS.enableTestLenses": true,
     "elixirLS.fetchDeps": true,
@@ -45,7 +39,6 @@
       ".direnv": true,
       ".elixir_ls": true,
       ".elixir-tools": true,
-      ".nix": true,
       "deps": true,
       "legacy": true,
       "priv/plts": true,

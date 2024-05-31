@@ -1,10 +1,7 @@
 defmodule AshUUID.Test.EmbeddedThing do
   @moduledoc false
 
-  use Ash.Resource, domain: AshUUID.Test, data_layer: :embedded, extensions: [AshUUID]
-
-  code_interface do
-  end
+  use Ash.Resource, data_layer: :embedded, extensions: [AshUUID]
 
   attributes do
     uuid_attribute :id

@@ -3,9 +3,6 @@ defmodule AshUUID.Test.Avocado do
 
   use Ash.Resource, domain: AshUUID.Test, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]
 
-  code_interface do
-  end
-
   postgres do
     table "avocados"
     repo AshUUID.Test.Repo
