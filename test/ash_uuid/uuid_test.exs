@@ -48,7 +48,7 @@ defmodule AshUUID.UUIDTest do
 
       assert {:ok, ^integer_uuid} = Ash.Type.apply_constraints(AshUUID.UUID, integer_uuid, constraints)
 
-      generated_uuid = Ash.Type.generator(AshUUID.UUID, constraints)
+      generated_uuid = AshUUID.UUID.generate(constraints)
       assert :raw = AshUUID.identify_format(generated_uuid)
       assert is_binary(generated_uuid)
       assert [generated_uuid_raw] = String.split(generated_uuid, "_")
@@ -87,7 +87,7 @@ defmodule AshUUID.UUIDTest do
 
       assert {:ok, ^integer_uuid} = Ash.Type.apply_constraints(AshUUID.UUID, integer_uuid, constraints)
 
-      generated_uuid = Ash.Type.generator(AshUUID.UUID, constraints)
+      generated_uuid = AshUUID.UUID.generate(constraints)
       assert :raw = AshUUID.identify_format(generated_uuid)
       assert is_binary(generated_uuid)
       assert [generated_uuid_raw] = String.split(generated_uuid, "_")
@@ -126,7 +126,7 @@ defmodule AshUUID.UUIDTest do
 
       assert {:ok, ^integer_uuid} = Ash.Type.apply_constraints(AshUUID.UUID, integer_uuid, constraints)
 
-      generated_uuid = Ash.Type.generator(AshUUID.UUID, constraints)
+      generated_uuid = AshUUID.UUID.generate(constraints)
       assert :encoded = AshUUID.identify_format(generated_uuid)
       assert is_binary(generated_uuid)
       assert [generated_uuid_encoded] = String.split(generated_uuid, "_")
@@ -166,7 +166,7 @@ defmodule AshUUID.UUIDTest do
 
       assert {:ok, ^integer_uuid} = Ash.Type.apply_constraints(AshUUID.UUID, integer_uuid, constraints)
 
-      generated_uuid = Ash.Type.generator(AshUUID.UUID, constraints)
+      generated_uuid = AshUUID.UUID.generate(constraints)
       assert :encoded = AshUUID.identify_format(generated_uuid)
       assert is_binary(generated_uuid)
       assert [generated_uuid_encoded] = String.split(generated_uuid, "_")
@@ -206,7 +206,7 @@ defmodule AshUUID.UUIDTest do
 
       assert {:ok, ^integer_uuid} = Ash.Type.apply_constraints(AshUUID.UUID, integer_uuid, constraints)
 
-      generated_uuid = Ash.Type.generator(AshUUID.UUID, constraints)
+      generated_uuid = AshUUID.UUID.generate(constraints)
       assert :prefixed = AshUUID.identify_format(generated_uuid)
       assert is_binary(generated_uuid)
       assert [^prefix, generated_uuid_encoded] = String.split(generated_uuid, "_")
@@ -246,7 +246,7 @@ defmodule AshUUID.UUIDTest do
 
       assert {:ok, ^integer_uuid} = Ash.Type.apply_constraints(AshUUID.UUID, integer_uuid, constraints)
 
-      generated_uuid = Ash.Type.generator(AshUUID.UUID, constraints)
+      generated_uuid = AshUUID.UUID.generate(constraints)
       assert :prefixed = AshUUID.identify_format(generated_uuid)
       assert is_binary(generated_uuid)
       assert [^prefix, generated_uuid_encoded] = String.split(generated_uuid, "_")
