@@ -44,7 +44,7 @@ defmodule AshUUID.MixProject do
     [
       {:uniq, "~> 0.6"},
       {:ash, "~> 3.0.0"},
-      {:ash_postgres, "~> 2.0.0"},
+      {:ash_postgres, "~> 2.0.11"},
       # Testing, documentation, and release tools
       {:mix_test_interactive, ">= 0.0.0", only: :test, runtime: false},
       {:mix_audit, ">= 0.0.0", only: [:dev, :test], runtime: false},
