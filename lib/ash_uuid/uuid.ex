@@ -36,6 +36,14 @@ defmodule AshUUID.UUID do
   end
 
   @impl true
+  def matches_type?(v, constraints) do
+    case cast_input(v, constraints) do
+      {:ok, _} -> true
+      _ -> false
+    end
+  end
+
+  @impl true
   def cast_input(term, constraints) do
     requested_format = requested_format(constraints[:encoded?], constraints[:prefixed?])
     process(term, constraints[:prefix], constraints[:strict?], initial_format(term), requested_format)
