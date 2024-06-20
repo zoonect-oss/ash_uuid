@@ -24,7 +24,7 @@ defmodule AshUUID.Macros do
 
     default =
       quote do
-        fn -> AshUUID.UUID.generator(unquote(constraints)) end
+        fn -> AshUUID.UUID.generate(unquote(constraints)) end
       end
 
     field_opts =
@@ -77,7 +77,7 @@ defmodule AshUUID.Macros do
 
     default =
       quote do
-        fn -> AshUUID.UUID.generator(unquote(constraints)) end
+        fn -> AshUUID.UUID.generate(unquote(constraints)) end
       end
 
     argument_opts =

@@ -23,8 +23,12 @@ defmodule AshUUID.UUID do
 
   @impl true
   def generator(constraints) do
+    StreamData.repeatedly(fn -> generate(constraints) end)
+  end
+
+  def generate(constraints) do
     {:ok, term} =
-      generate(constraints[:version])
+      generate_uuid(constraints[:version])
       |> process(
         constraints[:prefix],
         constraints[:strict?],
@@ -114,9 +118,9 @@ defmodule AshUUID.UUID do
 
   ###
 
-  defp generate(version)
-  defp generate(4), do: Uniq.UUID.uuid4()
-  defp generate(7), do: Uniq.UUID.uuid7()
+  defp generate_uuid(version)
+  defp generate_uuid(4), do: Uniq.UUID.uuid4()
+  defp generate_uuid(7), do: Uniq.UUID.uuid7()
 
   ###
 
