@@ -20,9 +20,9 @@ end
 
 Adoption:
 
-- add `{:ash_uuid, "~> 1.0.0"}`` to your `mix.exs`` project deps;
+- add `{:ash_uuid, "~> 1.0.0"}` to your `mix.exs` project deps;
 
-- add `AshUUID.PostgresExtension`` to your app Repo's installed_extensions and set AshUUID config `migration_default?: true` if Postgres-side UUIDs generation is needed;
+- add `AshUUID.PostgresExtension` to your app Repo's installed_extensions and set AshUUID config `migration_default?: true` if Postgres-side UUIDs generation is needed;
 
 - use the extension in your resources `use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshUUID]`;
 
