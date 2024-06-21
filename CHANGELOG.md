@@ -5,6 +5,19 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v1.1.0](https://github.com/zoonect-oss/ash_uuid/compare/v1.0.0...v1.1.0) (2024-06-21)
+
+
+
+
+### Bug Fixes:
+
+* added tests for the workaround suggested to close #10
+
+* require ash_postgres 2.0.11 or later
+
+* Ash.Type.generator expects DataStream
+
 ## [v1.0.0](https://github.com/zoonect-oss/ash_uuid/compare/v0.8.0-rc.1...v1.0.0) (2024-05-31)
 ### Breaking Changes:
 
