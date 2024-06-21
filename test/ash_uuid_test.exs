@@ -435,5 +435,51 @@ defmodule AshUUIDTest do
       expected = "embedded-thing_#{encoded_uuid}"
       assert {:ok, ^expected} = result
     end
+
+    test "testing hams and burgers" do
+      ham =
+        AshUUID.Test.Ham
+        |> Ash.Changeset.for_create(:create, %{})
+        |> Ash.create!()
+
+      assert %AshUUID.Test.Ham{} = ham
+      assert :prefixed = AshUUID.identify_format(ham.id)
+      assert ["ham", b62_string_uuid] = String.split(ham.id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      burger =
+        AshUUID.Test.Burger
+        |> Ash.Changeset.for_create(:create, %{ham_id: ham.id})
+        |> Ash.create!()
+
+      assert %AshUUID.Test.Burger{} = burger
+      assert :prefixed = AshUUID.identify_format(burger.id)
+      assert ["bur", b62_string_uuid] = String.split(burger.id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 4}} = Uniq.UUID.info(string_uuid)
+      assert :prefixed = AshUUID.identify_format(burger.ham_id)
+      assert ["ham", b62_string_uuid] = String.split(burger.ham_id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 7}} = Uniq.UUID.info(string_uuid)
+
+      ham =
+        ham
+        |> Ash.Changeset.for_update(:update, %{burger_id: burger.id})
+        |> Ash.update!()
+
+      assert :prefixed = AshUUID.identify_format(ham.burger_id)
+      assert ["bur", b62_string_uuid] = String.split(ham.burger_id, "_")
+      assert {:ok, string_uuid} = AshUUID.Encoder.decode(b62_string_uuid)
+      assert {:ok, %{version: 4}} = Uniq.UUID.info(string_uuid)
+
+      burger = Ash.load!(burger, :ham)
+      ham_id = ham.id
+
+      assert %AshUUID.Test.Ham{id: ^ham_id} = loaded_ham = burger.ham
+      assert :prefixed = AshUUID.identify_format(loaded_ham.id)
+
+      assert burger.id == ham.burger_id
+    end
   end
 end

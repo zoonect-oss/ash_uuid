@@ -26,19 +26,6 @@ defmodule AshUUID.UUID do
     StreamData.repeatedly(fn -> generate(constraints) end)
   end
 
-  def generate(constraints) do
-    {:ok, term} =
-      generate_uuid(constraints[:version])
-      |> process(
-        constraints[:prefix],
-        constraints[:strict?],
-        :raw,
-        requested_format(constraints[:encoded?], constraints[:prefixed?])
-      )
-
-    term
-  end
-
   @impl true
   def matches_type?(v, constraints) do
     case cast_input(v, constraints) do
@@ -88,7 +75,18 @@ defmodule AshUUID.UUID do
   @impl true
   def apply_constraints(_term, _constraints), do: :ok
 
-  ###
+  def generate(constraints) do
+    {:ok, term} =
+      generate_uuid(constraints[:version])
+      |> process(
+        constraints[:prefix],
+        constraints[:strict?],
+        :raw,
+        requested_format(constraints[:encoded?], constraints[:prefixed?])
+      )
+
+    term
+  end
 
   defp process(term, prefix, strict, initial_format, requested_format) do
     with {:ok, term} <- validate(term, initial_format),
@@ -104,11 +102,7 @@ defmodule AshUUID.UUID do
     end
   end
 
-  ###
-
   defp initial_format(term), do: AshUUID.identify_format(term)
-
-  ###
 
   defp requested_format(encoded, prefixed)
   defp requested_format(nil, nil), do: :raw
@@ -116,13 +110,9 @@ defmodule AshUUID.UUID do
   defp requested_format(true, false), do: :encoded
   defp requested_format(true, true), do: :prefixed
 
-  ###
-
   defp generate_uuid(version)
   defp generate_uuid(4), do: Uniq.UUID.uuid4()
   defp generate_uuid(7), do: Uniq.UUID.uuid7()
-
-  ###
 
   defp validate(term, initial_format)
 
@@ -134,16 +124,12 @@ defmodule AshUUID.UUID do
   defp validate(nil, _initial_format), do: {:ok, nil}
   defp validate(_term, _initial_format), do: {:error, "got invalid term"}
 
-  ###
-
   defp restore(result, initial_format, requested_format)
 
   defp restore(term, :integer, requested_format) when requested_format in [:raw, :encoded, :prefixed],
     do: {:ok, Uniq.UUID.to_string(term)}
 
   defp restore(term, _initial_format, _requested_format), do: {:ok, term}
-
-  ###
 
   defp strip(result, prefix, strict, initial_format)
 
@@ -164,8 +150,6 @@ defmodule AshUUID.UUID do
 
   defp strip(term, _prefix, _strict, _initial_format), do: {:ok, term}
 
-  ###
-
   defp decode(result, initial_format)
 
   defp decode(nil, nil), do: {:ok, nil}
@@ -174,8 +158,6 @@ defmodule AshUUID.UUID do
     do: AshUUID.Encoder.decode(term)
 
   defp decode(term, _initial_format), do: {:ok, term}
-
-  ###
 
   defp encode(result, requested_format)
 
@@ -186,14 +168,10 @@ defmodule AshUUID.UUID do
 
   defp encode(term, _requested_format), do: {:ok, term}
 
-  ###
-
   defp prefix(result, prefix, requested_format)
   defp prefix(nil, _prefix, _requested_format), do: {:ok, nil}
   defp prefix(term, prefix, :prefixed), do: {:ok, "#{prefix}_#{term}"}
   defp prefix(term, _prefix, _requested_format), do: {:ok, term}
-
-  ###
 
   defp dump(result, initial_format, requested_format)
 
