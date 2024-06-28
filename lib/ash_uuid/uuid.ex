@@ -182,4 +182,6 @@ defmodule AshUUID.UUID do
   end
 
   defp dump(term, _initial_format, _requested_format), do: {:ok, term}
+
+  def graphql_type(_), do: :id
 end
