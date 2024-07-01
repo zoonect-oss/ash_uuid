@@ -1,6 +1,6 @@
 [env]
 # mise.file = [".env"]
-DATABASE_URL = "postgres://postgres:postgres@127.0.0.1:51015/ash_uuid_test"
+DATABASE_URL = "postgres://postgres:postgres@127.0.0.1:51016/ash_uuid_test"
 
 [tools]
 erlang = "26.2.2"

@@ -54,10 +54,10 @@ defmodule AshUUID.UUID do
   def dump_to_embedded(term, constraints),
     do: process(term, constraints[:prefix], constraints[:strict?], initial_format(term), :raw)
 
-  @impl true
-  def equal?(term1, term2),
-    do:
-      process(term1, nil, false, initial_format(term1), :raw) == process(term2, nil, false, initial_format(term2), :raw)
+  # @impl true
+  # def equal?(term1, term2),
+  #   do:
+  #     process(term1, nil, false, initial_format(term1), :raw) == process(term2, nil, false, initial_format(term2), :raw)
 
   @impl true
   def constraints do
