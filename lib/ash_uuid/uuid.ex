@@ -57,7 +57,8 @@ defmodule AshUUID.UUID do
   # @impl true
   # def equal?(term1, term2),
   #   do:
-  #     process(term1, nil, false, initial_format(term1), :raw) == process(term2, nil, false, initial_format(term2), :raw)
+  #     process(term1, nil, false, initial_format(term1), :raw) ==
+  #       process(term2, nil, false, initial_format(term2), :raw)
 
   @impl true
   def constraints do
