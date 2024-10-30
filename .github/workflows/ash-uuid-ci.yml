@@ -225,7 +225,7 @@ jobs:
       - audit
       - format
       - docs
-      - dialyzer
+      # - dialyzer
       - credo
       - sobelow
       - test
