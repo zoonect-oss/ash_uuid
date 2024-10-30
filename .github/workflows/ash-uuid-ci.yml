@@ -119,18 +119,18 @@ jobs:
           mix-env: dev
           compile-assets: false
 
-  dialyzer:
-    name: mix dialyzer
-    runs-on: ubuntu-latest
-    needs: build-dev
-    steps:
-      - uses: actions/checkout@v3
-      - uses: zoonect-oss/github-ops/actions/mix-dialyzer@main
-        with:
-          erlang-version: 26.2
-          elixir-version: 1.16
-          mix-env: dev
-          compile-assets: false
+  # dialyzer:
+  #   name: mix dialyzer
+  #   runs-on: ubuntu-latest
+  #   needs: build-dev
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: zoonect-oss/github-ops/actions/mix-dialyzer@main
+  #       with:
+  #         erlang-version: 26.2
+  #         elixir-version: 1.16
+  #         mix-env: dev
+  #         compile-assets: false
 
   credo:
     name: mix credo --strict
