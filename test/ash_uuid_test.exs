@@ -245,7 +245,7 @@ defmodule AshUUIDTest do
 
       assert %AshUUID.Test.BlibBlob{} = blib_blob
 
-      {:ok, [blob]} = AshUUID.Test.read(AshUUID.Test.Blob)
+      {:ok, [blob]} = Ash.read(AshUUID.Test.Blob)
 
       assert %AshUUID.Test.Blob{} = blob
 
